@@ -34,8 +34,10 @@ public class ArrayStorage {
     void delete(String uuid) {
         int pos = findNumElement(uuid);
         if(pos >= 0) {
-            // переносим крайний элемент на освободившее место (избавление от дырок)
-            storage[pos] = storage[fullSize-1];
+            if(fullSize > 1) {
+                // переносим крайний элемент на освободившее место (избавление от дырок)
+                storage[pos] = storage[fullSize-1];
+            }
             storage[fullSize-1] = null;
 
             fullSize--;
