@@ -25,7 +25,6 @@ public class ArrayStorage {
         storage[fullSize++] = r;
     }
 
-
     Resume get(String uuid) {
         int pos = findNumElement(uuid);
         return pos >= 0 ? storage[pos] : null;
@@ -39,7 +38,6 @@ public class ArrayStorage {
                 storage[pos] = storage[fullSize-1];
             }
             storage[fullSize-1] = null;
-
             fullSize--;
         }
     }
