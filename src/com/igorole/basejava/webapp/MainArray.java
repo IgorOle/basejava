@@ -1,9 +1,14 @@
+package com.igorole.basejava.webapp;
+
+import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.storage.ArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Test for com.urise.webapp.storage.ArrayStorage
+ * Test for com.urise.webapp.storage.com.igorole.basejava.webapp.storage.ArrayStorage
  */
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();

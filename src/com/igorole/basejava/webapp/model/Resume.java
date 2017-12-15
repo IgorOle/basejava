@@ -1,12 +1,14 @@
+package com.igorole.basejava.webapp.model;
+
 import java.util.Arrays;
 
 /**
- * com.urise.webapp.model.Resume class
+ * com.urise.webapp.model.com.igorole.basejava.webapp.model.Resume class
  */
 public class Resume {
 
     // Unique identifier
-    String uuid;
+    public String uuid;
 
 
 

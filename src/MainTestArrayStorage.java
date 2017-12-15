@@ -1,5 +1,8 @@
+import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.storage.ArrayStorage;
+
 /**
- * Test for com.urise.webapp.storage.ArrayStorage
+ * Test for com.urise.webapp.storage.com.igorole.basejava.webapp.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
