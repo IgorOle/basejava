@@ -26,6 +26,10 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
+        if(size == storage.length) {
+            System.out.println("ERROR: storage is full");
+            return;
+        }
         if( findNumElement(r.uuid) == -1) {
             storage[size++] = r;
         }
