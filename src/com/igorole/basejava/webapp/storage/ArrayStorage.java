@@ -20,6 +20,12 @@ public class ArrayStorage {
         return -1;
     }
 
+    private int findNumElementEx(String uuid) {
+        int pos = findNumElement(uuid);
+        if(pos == -1) System.out.println("ERROR: " + uuid + " resume not found");
+        return pos;
+    }
+
     public void clear() {
         Arrays.fill(storage, null);
         size = 0;
@@ -30,7 +36,7 @@ public class ArrayStorage {
             System.out.println("ERROR: storage is full");
             return;
         }
-        if( findNumElement(r.uuid) == -1) {
+        if(findNumElement(r.uuid) == -1) {
             storage[size++] = r;
         }
         else {
@@ -39,23 +45,21 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int pos = findNumElement(uuid);
-        if(pos == -1) System.out.println("ERROR: resume not found");
+        int pos = findNumElementEx(uuid);
         return pos >= 0 ? storage[pos] : null;
     }
 
     public boolean update(Resume r) {
-        int pos = findNumElement(r.uuid);
+        int pos = findNumElementEx(r.uuid);
         if( pos >= 0) {
             storage[pos] = r;
             return true;
         }
-        System.out.println("ERROR: resume not found");
         return false;
     }
 
     public void delete(String uuid) {
-        int pos = findNumElement(uuid);
+        int pos = findNumElementEx(uuid);
         if(pos >= 0) {
             if(size > 1) {
                 // переносим крайний элемент на освободившее место (избавление от дырок)
@@ -63,9 +67,6 @@ public class ArrayStorage {
             }
             storage[size -1] = null;
             size--;
-        }
-        else {
-            System.out.println("ERROR: resume not found");
         }
     }
 
