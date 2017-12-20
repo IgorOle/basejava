@@ -7,16 +7,16 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage{
 
-    private void sortArrya(int from) {
+    private void correctArrya(int from) {
         Arrays.sort(storage, from, size);
     }
+
 
     @Override
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
         int s = Arrays.binarySearch(storage, 0, size, searchKey);
-        System.out.println("s = " + s);
         return s;
     }
 
@@ -28,20 +28,10 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         }
         if( getIndex(r.getUuid()) < 0 ) {
             storage[size++] = r;
-            sortArrya(0);
+            correctArrya(0);
         }
         else {
             System.out.println("ERROR: resume exist");
-        }
-    }
-
-    @Override
-    public void update(Resume r) {
-        int pos = getIndex(r.getUuid());
-        if( pos >= 0) {
-            storage[pos] = r;
-            sortArrya(0);
-            return;
         }
     }
 
@@ -56,7 +46,7 @@ public class SortedArrayStorage extends AbstractArrayStorage{
             }
             storage[size -1] = null;
             size--;
-            sortArrya(pos);
+            correctArrya(pos);
         }
     }
 

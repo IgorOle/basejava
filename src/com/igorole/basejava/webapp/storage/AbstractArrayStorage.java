@@ -10,6 +10,8 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    abstract protected void correctArrya();
+
     protected int getIndex(String uuid) {
         for(int i = 0; i < size; i++) {
             if(storage[i] != null && storage[i].getUuid().equals(uuid))  {
@@ -37,6 +39,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
         if( getIndex(r.getUuid()) == -1) {
             storage[size++] = r;
+            correctArrya();
         }
         else {
             System.out.println("ERROR: resume exist");
@@ -47,7 +50,6 @@ public abstract class AbstractArrayStorage implements Storage {
         int pos = getIndexEx(r.getUuid());
         if( pos >= 0) {
             storage[pos] = r;
-            return;
         }
     }
 
