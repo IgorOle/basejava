@@ -7,10 +7,12 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage{
 
-    private void correctArrya(int from) {
-        Arrays.sort(storage, from, size);
+    @Override
+    protected void insert(Resume r, int pos) {
+        int insertIdx = -pos - 1;
+        System.arraycopy(storage, insertIdx, storage, insertIdx + 1, size - insertIdx);
+        storage[insertIdx] = r;
     }
-
 
     @Override
     protected int getIndex(String uuid) {
@@ -21,32 +23,11 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
-    public void save(Resume r) {
-        if(size == STORAGE_LIMIT) {
-            System.out.println("ERROR: storage is full");
-            return;
-        }
-        if( getIndex(r.getUuid()) < 0 ) {
-            storage[size++] = r;
-            correctArrya(0);
-        }
-        else {
-            System.out.println("ERROR: resume exist");
-        }
-    }
-
-    @Override
     public void delete(String uuid) {
-        int pos = getIndex(uuid);
-
+        int pos = getIndexWithMsg(uuid);
         if(pos >= 0) {
-            // переносим крайний элемент на освободившее место (избавление от дырок)
-            if(size > 1) {
-                storage[pos] = storage[size -1];
-            }
-            storage[size -1] = null;
             size--;
-            correctArrya(pos);
+            System.arraycopy(storage, pos+1, storage, pos, size);
         }
     }
 

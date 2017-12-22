@@ -6,11 +6,10 @@ import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10000;
-
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    abstract protected void correctArrya();
+    abstract protected void insert(Resume r, int index);
 
     protected int getIndex(String uuid) {
         for(int i = 0; i < size; i++) {
@@ -21,25 +20,27 @@ public abstract class AbstractArrayStorage implements Storage {
         return -1;
     }
 
-    private int getIndexEx(String uuid) {
+    protected int getIndexWithMsg(String uuid) {
         int pos = getIndex(uuid);
         if(pos == -1) System.out.println("ERROR: resume " + uuid + " not found");
         return pos;
     }
 
     public Resume get(String uuid) {
-        int pos = getIndexEx(uuid);
+        int pos = getIndexWithMsg(uuid);
         return pos >= 0 ? storage[pos] : null;
     }
 
     public void save(Resume r) {
+        int pos = getIndex(r.getUuid());
         if(size == STORAGE_LIMIT) {
             System.out.println("ERROR: storage is full");
             return;
         }
-        if( getIndex(r.getUuid()) == -1) {
-            storage[size++] = r;
-            correctArrya();
+
+        if( pos < 0) {
+            insert(r, pos);
+            size++;
         }
         else {
             System.out.println("ERROR: resume exist");
@@ -47,14 +48,14 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume r) {
-        int pos = getIndexEx(r.getUuid());
+        int pos = getIndexWithMsg(r.getUuid());
         if( pos >= 0) {
             storage[pos] = r;
         }
     }
 
     public void delete(String uuid) {
-        int pos = getIndexEx(uuid);
+        int pos = getIndexWithMsg(uuid);
         if(pos >= 0) {
             if(size > 1) {
                 // переносим крайний элемент на освободившее место (избавление от дырок)
