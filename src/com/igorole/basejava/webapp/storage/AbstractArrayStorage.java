@@ -9,8 +9,6 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    abstract protected void insert(Resume r, int index);
-
     protected int getIndex(String uuid) {
         for(int i = 0; i < size; i++) {
             if(storage[i] != null && storage[i].getUuid().equals(uuid))  {
@@ -37,7 +35,6 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("ERROR: storage is full");
             return;
         }
-
         if( pos < 0) {
             insert(r, pos);
             size++;
@@ -78,4 +75,6 @@ public abstract class AbstractArrayStorage implements Storage {
     public int size() {
         return size;
     }
+
+    abstract protected void insert(Resume r, int index);
 }

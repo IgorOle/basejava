@@ -1,13 +1,14 @@
 package com.igorole.basejava.webapp;
 
 import com.igorole.basejava.webapp.model.Resume;
-import com.igorole.basejava.webapp.storage.ArrayStorage;
+import com.igorole.basejava.webapp.storage.AbstractArrayStorage;
+import com.igorole.basejava.webapp.storage.*;
 
 /**
  * Test for com.urise.webapp.storage.com.igorole.basejava.webapp.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final AbstractArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r0 = new Resume();

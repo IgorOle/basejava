@@ -1,8 +1,5 @@
 package com.igorole.basejava.webapp.model;
 
-import java.util.Arrays;
-
-
 public class Resume implements Comparable{
 
     // Unique identifier
