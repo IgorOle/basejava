@@ -8,7 +8,7 @@ import com.igorole.basejava.webapp.storage.*;
  * Test for com.urise.webapp.storage.com.igorole.basejava.webapp.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
-    static final AbstractArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final AbstractArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r0 = new Resume();
@@ -30,6 +30,8 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r4);
         ARRAY_STORAGE.save(r2);
         printAll();
+        ARRAY_STORAGE.get("xxx");
+
         ARRAY_STORAGE.delete(r2.getUuid());
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());

@@ -4,8 +4,14 @@ import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-
 public class SortedArrayStorage extends AbstractArrayStorage{
+
+    @Override
+    protected int getIndex(String uuid) {
+        Resume searchKey = new Resume();
+        searchKey.setUuid(uuid);
+        return Arrays.binarySearch(storage, 0, size, searchKey);
+    }
 
     @Override
     protected void insert(Resume r, int pos) {
@@ -15,20 +21,8 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume searchKey = new Resume();
-        searchKey.setUuid(uuid);
-        int s = Arrays.binarySearch(storage, 0, size, searchKey);
-        return s;
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int pos = getIndexWithMsg(uuid);
-        if(pos >= 0) {
-            size--;
-            System.arraycopy(storage, pos+1, storage, pos, size);
-        }
+    protected void remove(int pos) {
+        System.arraycopy(storage, pos+1, storage, pos, size-1);
     }
 
 }

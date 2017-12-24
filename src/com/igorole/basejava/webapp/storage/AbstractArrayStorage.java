@@ -5,24 +5,9 @@ import com.igorole.basejava.webapp.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
+    private static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
-
-    protected int getIndex(String uuid) {
-        for(int i = 0; i < size; i++) {
-            if(storage[i] != null && storage[i].getUuid().equals(uuid))  {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    protected int getIndexWithMsg(String uuid) {
-        int pos = getIndex(uuid);
-        if(pos == -1) System.out.println("ERROR: resume " + uuid + " not found");
-        return pos;
-    }
 
     public Resume get(String uuid) {
         int pos = getIndexWithMsg(uuid);
@@ -54,11 +39,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int pos = getIndexWithMsg(uuid);
         if(pos >= 0) {
-            if(size > 1) {
-                // переносим крайний элемент на освободившее место (избавление от дырок)
-                storage[pos] = storage[size -1];
-            }
-            storage[size -1] = null;
+            remove(pos);
             size--;
         }
     }
@@ -76,5 +57,13 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
-    abstract protected void insert(Resume r, int index);
+    private int getIndexWithMsg(String uuid) {
+        int pos = getIndex(uuid);
+        if(pos < 0) System.out.println("ERROR: resume " + uuid + " not found");
+        return pos;
+    }
+
+    protected abstract int getIndex(String uuid);
+    protected abstract void insert(Resume r, int index);
+    protected abstract void remove(int pos);
 }
