@@ -1,5 +1,8 @@
 package com.igorole.basejava.webapp.storage;
 
+import com.igorole.basejava.webapp.exception.ExistStorageException;
+import com.igorole.basejava.webapp.exception.NotExistStorageException;
+import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -10,35 +13,41 @@ public abstract class AbstractArrayStorage implements Storage {
     protected int size = 0;
 
     public Resume get(String uuid) {
-        int pos = getIndexWithMsg(uuid);
-        return pos >= 0 ? storage[pos] : null;
+        int pos = getIndex(uuid);
+        if(pos < 0 ) {
+            throw new NotExistStorageException(uuid);
+        }
+        return storage[pos];
     }
 
     public void save(Resume r) {
-        int pos = getIndex(r.getUuid());
-        if(size == STORAGE_LIMIT) {
-            System.out.println("ERROR: storage is full");
-            return;
-        }
-        if( pos < 0) {
-            insert(r, pos);
-            size++;
+		int pos = getIndex(r.getUuid());
+		if(size == STORAGE_LIMIT) {
+			throw new StorageException("ERROR: storage is full", r.getUuid());
+		}
+		else if( pos < 0) {
+				insert(r, pos);
+				size++;
         }
         else {
-            System.out.println("ERROR: resume exist");
+            throw new ExistStorageException(r.getUuid());
         }
-    }
+	}
 
     public void update(Resume r) {
-        int pos = getIndexWithMsg(r.getUuid());
-        if( pos >= 0) {
+        int pos = getIndex(r.getUuid());
+        if (pos < 0) {
+            throw new NotExistStorageException(r.getUuid());
+        } else {
             storage[pos] = r;
         }
     }
 
     public void delete(String uuid) {
-        int pos = getIndexWithMsg(uuid);
-        if(pos >= 0) {
+        int pos = getIndex(uuid);
+        if (pos < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
             remove(pos);
             size--;
         }
@@ -55,12 +64,6 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public int size() {
         return size;
-    }
-
-    private int getIndexWithMsg(String uuid) {
-        int pos = getIndex(uuid);
-        if(pos < 0) System.out.println("ERROR: resume " + uuid + " not found");
-        return pos;
     }
 
     protected abstract int getIndex(String uuid);
