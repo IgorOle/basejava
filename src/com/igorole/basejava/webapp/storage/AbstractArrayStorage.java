@@ -8,7 +8,7 @@ import com.igorole.basejava.webapp.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    private static final int STORAGE_LIMIT = 10000;
+    public static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
@@ -21,16 +21,19 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume r) {
-		int pos = getIndex(r.getUuid());
+        int pos;
 		if(size == STORAGE_LIMIT) {
 			throw new StorageException("ERROR: storage is full", r.getUuid());
 		}
-		else if( pos < 0) {
-				insert(r, pos);
-				size++;
-        }
-        else {
-            throw new ExistStorageException(r.getUuid());
+		else {
+            pos = getIndex(r.getUuid());
+		    if( pos < 0) {
+                insert(r, pos);
+                size++;
+            }
+            else {
+                throw new ExistStorageException(r.getUuid());
+            }
         }
 	}
 

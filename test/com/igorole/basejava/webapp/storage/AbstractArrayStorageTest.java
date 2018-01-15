@@ -2,8 +2,11 @@ package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
+import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 import org.junit.*;
+
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.*;
 
@@ -34,9 +37,22 @@ public abstract class AbstractArrayStorageTest {
         storage.save(r1);
     }
 
+    @Test(expected = StorageException.class)
+    public void saveOver() throws NoSuchFieldException, IllegalAccessException {
+        Resume resume = new Resume();
+        Class superclass = storage.getClass().getSuperclass();
+        Field size = superclass.getDeclaredField("size");
+        size.setAccessible(true);
+        System.out.println(size.get(storage));
+        size.set(storage, AbstractArrayStorage.STORAGE_LIMIT);
+        storage.save(resume);
+    }
+
     @Test
     public void update() throws Exception {
+        Resume resumeBefore = r1;
         storage.update(r1);
+        assertTrue(resumeBefore == storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -55,7 +71,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void getAll() throws Exception {
         Resume[] resultArr = storage.getAll();
-        Resume[] expectedArr = new Resume[] {r1, r2, r3};
+        Resume[] expectedArr = new Resume[]{r1, r2, r3};
         assertArrayEquals(expectedArr, resultArr);
     }
 
