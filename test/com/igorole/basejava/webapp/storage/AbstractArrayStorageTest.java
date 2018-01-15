@@ -38,7 +38,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = StorageException.class)
-    public void saveOver() throws NoSuchFieldException, IllegalAccessException {
+    public void saveOverFlow() throws NoSuchFieldException, IllegalAccessException {
         Resume resume = new Resume();
         Class superclass = storage.getClass().getSuperclass();
         Field size = superclass.getDeclaredField("size");
