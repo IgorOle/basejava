@@ -38,16 +38,12 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test (expected = StorageException.class)
-    public void saveOverFlow() throws NoSuchFieldException, IllegalAccessException {
-        for (int i = 0; i <= 99999999; i++) {
-            try {
+    public void saveOverFlow() {
+        int countResume = storage.size();
+        for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - countResume; i++) {
                 storage.save(new Resume());
-            }
-            catch (StorageException ex) {
-                storage.save(new Resume());
-            }
         }
-
+        storage.save(new Resume());
     }
 
     @Test
