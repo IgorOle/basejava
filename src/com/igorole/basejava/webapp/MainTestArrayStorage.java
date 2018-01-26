@@ -4,11 +4,9 @@ import com.igorole.basejava.webapp.model.Resume;
 import com.igorole.basejava.webapp.storage.AbstractArrayStorage;
 import com.igorole.basejava.webapp.storage.*;
 
-/**
- * Test for com.urise.webapp.storage.com.igorole.basejava.webapp.storage.ArrayStorage
- */
+
 public class MainTestArrayStorage {
-    static final AbstractArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    static final AbstractArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r0 = new Resume("uuid0");
@@ -20,27 +18,29 @@ public class MainTestArrayStorage {
 
         System.out.println("--------------------");
         ARRAY_STORAGE.save(r1);
-        ARRAY_STORAGE.save(r3);
-        ARRAY_STORAGE.save(r4);
         ARRAY_STORAGE.save(r2);
-        printAll();
-        ARRAY_STORAGE.delete(r2.getUuid());
+        System.out.println(ARRAY_STORAGE.size());
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
-        printAll();
-        ARRAY_STORAGE.save(r5);
-        printAll();
-        ARRAY_STORAGE.save(r0);
-        printAll();
-        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
-        System.out.println("Size: " + ARRAY_STORAGE.size());
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
-        printAll();
+        System.out.println(ARRAY_STORAGE.size());
         ARRAY_STORAGE.delete(r2.getUuid());
-        printAll();
-        ARRAY_STORAGE.clear();
-        printAll();
-        System.out.println("Size: " + ARRAY_STORAGE.size());
+        System.out.println(ARRAY_STORAGE.size());
+//        printAll();
+//        ARRAY_STORAGE.delete(r1.getUuid());
+//        printAll();
+//        ARRAY_STORAGE.save(r5);
+//        printAll();
+//        ARRAY_STORAGE.save(r0);
+//        printAll();
+//        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
+//        System.out.println("Size: " + ARRAY_STORAGE.size());
+//        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+//        printAll();
+//        ARRAY_STORAGE.delete(r2.getUuid());
+//        printAll();
+//        ARRAY_STORAGE.clear();
+//        printAll();
+//        System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
     static void printAll() {

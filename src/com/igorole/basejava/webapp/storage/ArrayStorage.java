@@ -14,8 +14,9 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void insert(Resume r, int index) {
+    protected void insert(int index, Resume r) {
         storage[size] = r;
+        size++;
     }
 
     @Override
@@ -24,7 +25,6 @@ public class ArrayStorage extends AbstractArrayStorage {
             // переносим крайний элемент на освободившее место (избавление от дырок)
             storage[pos] = storage[size -1];
         }
-
     }
 
 }
