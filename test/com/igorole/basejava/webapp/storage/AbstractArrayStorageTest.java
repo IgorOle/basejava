@@ -4,6 +4,7 @@ import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,11 +37,15 @@ public abstract class AbstractArrayStorageTest {
         storage.save(r1);
     }
 
-    @Test (expected = StorageException.class)
+    @Test(expected = StorageException.class)
     public void saveOverFlow() {
         int countResume = storage.size();
-        for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - countResume; i++) {
+        try {
+            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - countResume; i++) {
                 storage.save(new Resume());
+            }
+        } catch (StorageException  ex) {
+            Assert.fail();
         }
         storage.save(new Resume());
     }
