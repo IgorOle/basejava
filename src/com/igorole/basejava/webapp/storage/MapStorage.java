@@ -35,12 +35,13 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    protected Resume doGet(int pos) {
+        return null;
+    }
+
+    @Override
     protected int getIndex(String uuid) {
         return 0;
     }
 
-    @Override
-    protected Resume doGet(int pos) {
-        return null;
-    }
 }
