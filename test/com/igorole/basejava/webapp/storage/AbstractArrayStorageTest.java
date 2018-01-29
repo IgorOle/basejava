@@ -44,7 +44,7 @@ public abstract class AbstractArrayStorageTest {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - countResume; i++) {
                 storage.save(new Resume());
             }
-        } catch (StorageException  ex) {
+        } catch (StorageException ex) {
             Assert.fail();
         }
         storage.save(new Resume());

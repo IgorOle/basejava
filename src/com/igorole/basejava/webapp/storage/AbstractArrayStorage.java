@@ -1,8 +1,5 @@
 package com.igorole.basejava.webapp.storage;
 
-import com.igorole.basejava.webapp.exception.ExistStorageException;
-import com.igorole.basejava.webapp.exception.NotExistStorageException;
-import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -12,20 +9,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    @Override
-    protected void doUpdate(int pos, Resume r) {
-        storage[pos] = r;
-    }
-
-    protected void doDelete(int pos) {
-        storage[pos]=null;
-        remove(pos);
-        size--;
-    }
-
-    @Override
-    protected Resume doGet(int pos) {
-        return storage[pos];
+    public int size() {
+        return size;
     }
 
     public void clear() {
@@ -36,10 +21,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
-    public int size() {
-        return size;
+
+    @Override
+    protected void doUpdate(int pos, Resume r) {
+        storage[pos] = r;
     }
+
+    protected void doDelete(int pos) {
+        storage[pos] = null;
+        remove(pos);
+        size--;
+    }
+
+    @Override
+    protected Resume doGet(int pos) {
+        return storage[pos];
+    }
+
     protected abstract void remove(int pos);
-
-
 }
