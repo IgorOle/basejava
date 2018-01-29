@@ -8,12 +8,6 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage{
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
-    }
-
-    @Override
     protected void insert(int pos, Resume r) {
         if(size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", null);;
         int insertIdx = -pos - 1;
@@ -21,6 +15,12 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         storage[insertIdx] = r;
         size++;
     }
+    @Override
+    protected int getIndex(String uuid) {
+        Resume searchKey = new Resume(uuid);
+        return Arrays.binarySearch(storage, 0, size, searchKey);
+    }
+
 
     @Override
     protected void remove(int pos) {

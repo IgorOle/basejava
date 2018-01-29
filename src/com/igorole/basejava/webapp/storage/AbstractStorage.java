@@ -15,15 +15,17 @@ public abstract class AbstractStorage implements Storage{
         int pos = getNotExistedIndex(r.getUuid());
         insert(pos, r);
     }
-    public void delete(String uuid){
-        int pos = getExistedIndex(uuid);
-        doDelete(pos);
-    }
 
     public Resume get(String uuid){
         int pos = getExistedIndex(uuid);
         return doGet(pos);
     }
+
+    public void delete(String uuid){
+        int pos = getExistedIndex(uuid);
+        doDelete(pos);
+    }
+
 
     private int getExistedIndex(String uuid) {
         int index = getIndex(uuid);
