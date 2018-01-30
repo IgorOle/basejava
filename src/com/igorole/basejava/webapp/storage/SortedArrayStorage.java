@@ -22,10 +22,8 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
-
     @Override
     protected void remove(int pos) {
         System.arraycopy(storage, pos+1, storage, pos, size-1);
     }
-
 }
