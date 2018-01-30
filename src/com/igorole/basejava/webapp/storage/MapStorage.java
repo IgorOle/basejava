@@ -20,28 +20,27 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(int pos, Resume r) {
-
+    protected boolean isExist(Object index) {
+        return false;
     }
 
     @Override
-    protected void insert(int pos, Resume r) {
-
-    }
+    protected void doUpdate(Object pos, Resume r) {    }
 
     @Override
-    protected void doDelete(int pos) {
-
-    }
+    protected void insert(int pos, Resume r) {    }
 
     @Override
-    protected Resume doGet(int pos) {
-        return null;
-    }
+    protected void doDelete(Object pos) {    }
 
     @Override
     protected int getIndex(String uuid) {
         return 0;
+    }
+
+    @Override
+    protected Resume doGet(Object pos) {
+        return null;
     }
 
 }

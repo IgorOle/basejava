@@ -23,8 +23,19 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(int pos, Resume r) {
-        storage.set(pos, r);
+    protected boolean isExist(Object index) {
+        try {
+            storage.get((int)index);
+        }
+        catch (IndexOutOfBoundsException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void doUpdate(Object pos, Resume r) {
+        storage.set((int) pos, r);
     }
 
     @Override
@@ -33,8 +44,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doDelete(int pos) {
-        storage.remove(pos);
+    protected void doDelete(Object pos) {
+        storage.remove((int)pos);
     }
 
     @Override
@@ -47,8 +58,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(int pos) {
-        return storage.get(pos);
+    protected Resume doGet(Object pos) {
+        return storage.get((int) pos);
     }
 
 }

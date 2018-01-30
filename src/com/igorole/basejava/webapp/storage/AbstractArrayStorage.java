@@ -23,19 +23,24 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(int pos, Resume r) {
-        storage[pos] = r;
-    }
-
-    protected void doDelete(int pos) {
-        storage[pos] = null;
-        remove(pos);
-        size--;
+    protected void doUpdate(Object pos, Resume r) {
+        storage[(int) pos] = r;
     }
 
     @Override
-    protected Resume doGet(int pos) {
-        return storage[pos];
+    protected Resume doGet(Object pos) {
+        return storage[(int) pos];
+    }
+
+    protected boolean isExist(Object searchKey) {
+        return (int)searchKey >= 0;
+    }
+
+    protected void doDelete(Object pos) {
+        int posInteger = (int)pos;
+        storage[posInteger] = null;
+        remove(posInteger);
+        size--;
     }
 
     protected abstract void remove(int pos);
