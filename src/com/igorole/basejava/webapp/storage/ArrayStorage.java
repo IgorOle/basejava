@@ -6,7 +6,7 @@ import com.igorole.basejava.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void insert(int index, Resume r) {
+    protected void insert(Object index, Resume r) {
         storage[size] = r;
         size++;
     }
@@ -19,7 +19,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    protected int getIndex(String uuid) {
+    protected Object getIndex(String uuid) {
         if(size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", null);
         for(int i = 0; i < size; i++) {
             if(storage[i] != null && storage[i].getUuid().equals(uuid))  {

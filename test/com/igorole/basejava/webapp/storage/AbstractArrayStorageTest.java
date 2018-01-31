@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public abstract class AbstractArrayStorageTest {
@@ -74,6 +76,10 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() throws Exception {
         Resume[] resultArr = storage.getAll();
         Resume[] expectedArr = new Resume[]{r1, r2, r3};
+        if(storage instanceof MapStorage ) { // т.к. в мапе лежат элементы не так как их кладут
+            Arrays.sort(resultArr);
+            Arrays.sort(expectedArr);
+        }
         assertArrayEquals(expectedArr, resultArr);
     }
 

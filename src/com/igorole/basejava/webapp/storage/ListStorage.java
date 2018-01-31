@@ -5,7 +5,7 @@ import com.igorole.basejava.webapp.model.Resume;
 import java.util.ArrayList;
 
 public class ListStorage extends AbstractStorage {
-    ArrayList<Resume> storage = new ArrayList<Resume>();
+    ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -39,7 +39,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void insert(int pos, Resume r) {
+    protected void insert(Object pos, Resume r) {
         storage.add(r);
     }
 
@@ -49,7 +49,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getIndex(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid))
                 return i;

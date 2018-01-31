@@ -7,23 +7,19 @@ import com.igorole.basejava.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage{
 
     public void save(Resume r) {
-        int pos = getNotExistedIndex(r.getUuid());
-        insert(pos, r);
+        insert(getNotExistedIndex(r.getUuid()), r);
     }
 
     public void update(Resume r) {
-        Object pos = getExistedIndex(r.getUuid());
-        doUpdate(pos, r);
+        doUpdate(getExistedIndex(r.getUuid()), r);
     }
 
     public Resume get(String uuid){
-        Object pos = getExistedIndex(uuid);
-        return doGet(pos);
+        return doGet(getExistedIndex(uuid));
     }
 
     public void delete(String uuid){
-        Object pos = getExistedIndex(uuid);
-        doDelete(pos);
+        doDelete(getExistedIndex(uuid));
     }
 
     private Object getExistedIndex(String uuid) {
@@ -34,8 +30,8 @@ public abstract class AbstractStorage implements Storage{
         return index;
     }
 
-    private int getNotExistedIndex(String uuid) {
-        int index = getIndex(uuid);
+    private Object getNotExistedIndex(String uuid) {
+        Object index = getIndex(uuid);
         if (isExist(index)) {
             throw new ExistStorageException(uuid);
         }
@@ -44,9 +40,9 @@ public abstract class AbstractStorage implements Storage{
 
     protected abstract boolean isExist(Object index);
     protected abstract void doUpdate(Object pos, Resume r);
-    protected abstract void insert(int pos, Resume r);
+    protected abstract void insert(Object pos, Resume r);
     protected abstract void doDelete(Object pos);
-    protected abstract int getIndex(String uuid);
+    protected abstract Object getIndex(String uuid);
     protected abstract Resume doGet(Object pos);
 
 }
