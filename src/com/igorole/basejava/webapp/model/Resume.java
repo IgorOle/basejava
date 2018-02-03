@@ -2,7 +2,7 @@ package com.igorole.basejava.webapp.model;
 
 import java.util.UUID;
 
-public class Resume implements Comparable{
+public class Resume{
     // Unique identifier
     private String uuid;
 
@@ -36,8 +36,5 @@ public class Resume implements Comparable{
         return uuid;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return uuid.compareTo(((Resume)o).getUuid());
-    }
+
 }
