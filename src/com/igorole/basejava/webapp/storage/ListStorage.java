@@ -3,6 +3,7 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
     ArrayList<Resume> storage = new ArrayList<>();
@@ -13,8 +14,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+    public List<Resume> getAllList() {
+        return storage;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getIndex(String uuid) {
+    protected Integer getIndex(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid))
                 return i;

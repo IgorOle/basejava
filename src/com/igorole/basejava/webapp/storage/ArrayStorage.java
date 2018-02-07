@@ -19,7 +19,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    protected Object getIndex(String uuid) {
+    protected Integer getIndex(String uuid) {
         if(size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", null);
         for(int i = 0; i < size; i++) {
             if(storage[i] != null && storage[i].getUuid().equals(uuid))  {
@@ -28,4 +28,5 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
         return -1;
     }
+
 }

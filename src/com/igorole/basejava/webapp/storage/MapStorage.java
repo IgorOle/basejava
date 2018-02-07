@@ -2,8 +2,9 @@ package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.model.Resume;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MapStorage extends AbstractStorage {
@@ -15,9 +16,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        Collection<Resume> resumeCollection = storage.values();
-        return resumeCollection.toArray(new Resume[storage.size()]);
+    public List<Resume> getAllList() {
+        return new ArrayList<Resume>(storage.values());
     }
 
     @Override

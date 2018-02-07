@@ -4,6 +4,9 @@ import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage{
 
     public void save(Resume r) {
@@ -20,6 +23,13 @@ public abstract class AbstractStorage implements Storage{
 
     public void delete(String uuid){
         doDelete(getExistedIndex(uuid));
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = getAllList();
+        Collections.sort(list);
+        return list;
     }
 
     private Object getExistedIndex(String uuid) {
@@ -44,5 +54,5 @@ public abstract class AbstractStorage implements Storage{
     protected abstract void doDelete(Object pos);
     protected abstract Object getIndex(String uuid);
     protected abstract Resume doGet(Object pos);
-
+    protected abstract List<Resume> getAllList();
 }

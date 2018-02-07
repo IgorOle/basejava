@@ -3,6 +3,7 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     public static final int STORAGE_LIMIT = 10000;
@@ -18,8 +19,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    @Override
+    protected List<Resume> getAllList() {
+        return Arrays.asList(Arrays.copyOf(storage,  size));
     }
 
     @Override

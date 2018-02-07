@@ -5,12 +5,15 @@ import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 public abstract class AbstractArrayStorageTest {
     Storage storage;
@@ -41,6 +44,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveOverFlow() {
+        assumeTrue(storage instanceof AbstractArrayStorage);
         int countResume = storage.size();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - countResume; i++) {
@@ -73,14 +77,10 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        Resume[] resultArr = storage.getAll();
-        Resume[] expectedArr = new Resume[]{r1, r2, r3};
-        if(storage instanceof MapStorage ) { // т.к. в мапе лежат элементы не так как их кладут
-            Arrays.sort(resultArr);
-            Arrays.sort(expectedArr);
-        }
-        assertArrayEquals(expectedArr, resultArr);
+    public void getAllSorted() throws Exception {
+        List<Resume> resultArr = storage.getAllSorted();
+        List<Resume> expectedArr = Arrays.asList(r1, r2, r3);
+        Assert.assertEquals(expectedArr, resultArr);
     }
 
     @Test

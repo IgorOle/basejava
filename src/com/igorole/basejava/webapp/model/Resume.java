@@ -2,16 +2,23 @@ package com.igorole.basejava.webapp.model;
 
 import java.util.UUID;
 
-public class Resume{
+public class Resume implements Comparable{
     // Unique identifier
     private String uuid;
+    private String fullName;
 
     public Resume() {
         this(UUID.randomUUID().toString());
     }
 
+
     public Resume(String uuid) {
         this.uuid = uuid;
+    }
+
+    public Resume(String uuid, String fullName) {
+        this.uuid = uuid;
+        this.fullName = fullName;
     }
 
     public String getUuid() {
@@ -36,5 +43,8 @@ public class Resume{
         return uuid;
     }
 
-
+    @Override
+    public int compareTo(Object o) {
+        return uuid.compareTo(((Resume)o).getUuid());
+    }
 }
