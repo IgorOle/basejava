@@ -44,8 +44,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveOverFlow() {
-        assumeTrue(storage instanceof AbstractArrayStorage);
         int countResume = storage.size();
+        assumeTrue(storage instanceof AbstractArrayStorage);
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - countResume; i++) {
                 storage.save(new Resume());
