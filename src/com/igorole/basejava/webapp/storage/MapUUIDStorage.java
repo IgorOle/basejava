@@ -3,19 +3,16 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
-    ArrayList<Resume> storage = new ArrayList<>();
+
+public class MapUUIDStorage extends AbstractStorage {
+    HashMap <String, Resume>storage = new HashMap<>();
 
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public List<Resume> getAllList() {
-        return new ArrayList<>(storage);
     }
 
     @Override
@@ -25,36 +22,36 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object index) {
-        return (int)index >= 0;
+        return storage.containsKey(index);
     }
 
     @Override
     protected void doUpdate(Object pos, Resume r) {
-        storage.set((int) pos, r);
+        storage.put((String)pos, r);
     }
 
     @Override
     protected void insert(Object pos, Resume r) {
-        storage.add(r);
+        storage.put((String)pos, r);
     }
 
     @Override
     protected void doDelete(Object pos) {
-        storage.remove((int)pos);
+        storage.remove(pos);
     }
 
     @Override
-    protected Integer getSearchKey(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getUuid().equals(uuid))
-                return i;
-        }
-        return -1;
+    protected String getSearchKey(String uuid) {
+        return uuid;
     }
 
     @Override
     protected Resume doGet(Object pos) {
-        return storage.get((int) pos);
+        return storage.get(pos);
     }
 
+    @Override
+    protected List<Resume> getAllList() {
+        return new ArrayList<>(storage.values());
+    }
 }

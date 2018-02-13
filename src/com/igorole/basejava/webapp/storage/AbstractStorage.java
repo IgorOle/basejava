@@ -32,16 +32,16 @@ public abstract class AbstractStorage implements Storage{
         return list;
     }
 
-    private Object getExistedIndex(String uuid) {
-        Object index = getIndex(uuid);
+    protected Object getExistedIndex(String uuid) {
+        Object index = getSearchKey(uuid);
         if (!isExist(index)) {
             throw new NotExistStorageException(uuid);
         }
         return index;
     }
 
-    private Object getNotExistedIndex(String uuid) {
-        Object index = getIndex(uuid);
+    protected Object getNotExistedIndex(String uuid) {
+        Object index = getSearchKey(uuid);
         if (isExist(index)) {
             throw new ExistStorageException(uuid);
         }
@@ -52,7 +52,7 @@ public abstract class AbstractStorage implements Storage{
     protected abstract void doUpdate(Object pos, Resume r);
     protected abstract void insert(Object pos, Resume r);
     protected abstract void doDelete(Object pos);
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
     protected abstract Resume doGet(Object pos);
     protected abstract List<Resume> getAllList();
 }

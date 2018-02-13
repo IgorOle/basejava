@@ -17,7 +17,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAllList() {
-        return new ArrayList<Resume>(storage.values());
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getIndex(String key) {
+    protected Object getSearchKey(String key) {
         return storage.get(key);
     }
 
