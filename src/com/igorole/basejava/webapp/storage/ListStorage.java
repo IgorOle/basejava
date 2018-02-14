@@ -56,5 +56,4 @@ public class ListStorage extends AbstractStorage {
     protected Resume doGet(Object pos) {
         return storage.get((int) pos);
     }
-
 }

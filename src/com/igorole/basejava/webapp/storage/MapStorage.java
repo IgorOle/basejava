@@ -46,7 +46,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String key) {
+    protected Resume getSearchKey(String key) {
         return storage.get(key);
     }
 
