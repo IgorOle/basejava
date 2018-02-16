@@ -5,7 +5,7 @@ import com.igorole.basejava.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
@@ -24,23 +24,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (int)index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     @Override
-    protected void doUpdate(Object pos, Resume r) {
-        storage.set((int) pos, r);
+    protected void doUpdate(Integer pos, Resume r) {
+        storage.set(pos, r);
     }
 
     @Override
-    protected void insert(Object pos, Resume r) {
+    protected void insert(Integer pos, Resume r) {
         storage.add(r);
     }
 
     @Override
-    protected void doDelete(Object pos) {
-        storage.remove((int)pos);
+    protected void doDelete(Integer pos) {
+        storage.remove(pos);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object pos) {
-        return storage.get((int) pos);
+    protected Resume doGet(Integer pos) {
+        return storage.get(pos);
     }
 }

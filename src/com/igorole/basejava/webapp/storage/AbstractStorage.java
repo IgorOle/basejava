@@ -7,7 +7,7 @@ import com.igorole.basejava.webapp.model.Resume;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage{
+public abstract class AbstractStorage<SK> implements Storage {
 
     public void save(Resume r) {
         insert(getNotExistedIndex(r.getUuid()), r);
@@ -17,11 +17,11 @@ public abstract class AbstractStorage implements Storage{
         doUpdate(getExistedIndex(r.getUuid()), r);
     }
 
-    public Resume get(String uuid){
+    public Resume get(String uuid) {
         return doGet(getExistedIndex(uuid));
     }
 
-    public void delete(String uuid){
+    public void delete(String uuid) {
         doDelete(getExistedIndex(uuid));
     }
 
@@ -32,27 +32,33 @@ public abstract class AbstractStorage implements Storage{
         return list;
     }
 
-    protected Object getExistedIndex(String uuid) {
-        Object index = getSearchKey(uuid);
+    protected SK getExistedIndex(String uuid) {
+        SK index = getSearchKey(uuid);
         if (!isExist(index)) {
             throw new NotExistStorageException(uuid);
         }
         return index;
     }
 
-    protected Object getNotExistedIndex(String uuid) {
-        Object index = getSearchKey(uuid);
+    protected SK getNotExistedIndex(String uuid) {
+        SK index = getSearchKey(uuid);
         if (isExist(index)) {
             throw new ExistStorageException(uuid);
         }
         return index;
     }
 
-    protected abstract boolean isExist(Object index);
-    protected abstract void doUpdate(Object pos, Resume r);
-    protected abstract void insert(Object pos, Resume r);
-    protected abstract void doDelete(Object pos);
-    protected abstract Object getSearchKey(String uuid);
-    protected abstract Resume doGet(Object pos);
+    protected abstract boolean isExist(SK index);
+
+    protected abstract void doUpdate(SK pos, Resume r);
+
+    protected abstract void insert(SK pos, Resume r);
+
+    protected abstract void doDelete(SK pos);
+
+    protected abstract SK getSearchKey(String uuid);
+
+    protected abstract Resume doGet(SK pos);
+
     protected abstract List<Resume> getAllList();
 }
