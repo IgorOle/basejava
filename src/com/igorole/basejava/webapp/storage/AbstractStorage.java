@@ -6,8 +6,11 @@ import com.igorole.basejava.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
+
+    private final static Logger LOG = Logger.getLogger(AbstractArrayStorage.class.getName());
 
     public void save(Resume r) {
         insert(getNotExistedIndex(r.getUuid()), r);
@@ -27,6 +30,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("getAllSorted");
         List<Resume> list = getAllList();
         Collections.sort(list);
         return list;
