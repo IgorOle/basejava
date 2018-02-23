@@ -1,15 +1,15 @@
 package com.igorole.basejava.webapp.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Organization {
     private Link link;
-    private Date dateStart;
-    private Date dateEnd;
+    private LocalDate dateStart;
+    private LocalDate dateEnd;
     private String title;
     private String text;
 
-    public Organization(Link link, Date dateStart, Date dateEnd, String title, String text) {
+    public Organization(Link link, LocalDate dateStart, LocalDate dateEnd, String title, String text) {
         this.link = link;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -21,11 +21,11 @@ public class Organization {
         return link;
     }
 
-    public Date getDateStart() {
+    public LocalDate getDateStart() {
         return dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDate getDateEnd() {
         return dateEnd;
     }
 

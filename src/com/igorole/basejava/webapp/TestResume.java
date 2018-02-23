@@ -4,17 +4,13 @@ package com.igorole.basejava.webapp;
 import com.igorole.basejava.webapp.model.*;
 import com.igorole.basejava.webapp.view.OutHTMLResume;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class TestResume {
 
     public static void main(String[] args) throws ParseException {
-        TimeZone tz = TimeZone.getTimeZone("Europe/Moscow");
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        dateFormat.setTimeZone(tz);
         OrganizationSection organizationEducationSection;
         OrganizationSection organizationJobSection;
         ListSection listAchiSection;
@@ -31,15 +27,15 @@ public class TestResume {
         ArrayList<String> qualification = new ArrayList<>();
         Resume resume = new Resume("1", "Иванов Иван Иванович");
         //Education
-        educationOrg1 = new Organization(new Link("РГУ", "http://rgu.ru"), dateFormat.parse("01-01-1990"), dateFormat.parse("01-01-1995"), "", "Курс молодого бойца1");
-        educationOrg2 = new Organization(new Link("МГУ", "http://mgu.ru"), dateFormat.parse("01-01-1995"), dateFormat.parse("01-01-2000"), "", "Курс молодого бойца2");
+        educationOrg1 = new Organization(new Link("РГУ", "http://rgu.ru"), LocalDate.of(1990, 01, 01), LocalDate.of(1995, 01, 01), "", "Курс молодого бойца1");
+        educationOrg2 = new Organization(new Link("МГУ", "http://mgu.ru"), LocalDate.of(1995, 01, 01), LocalDate.of(2000, 01, 01), "", "Курс молодого бойца2");
         organizationsEducation.add(educationOrg1);
         organizationsEducation.add(educationOrg2);
         organizationEducationSection = new OrganizationSection("Образование", organizationsEducation);
         resume.setSections(SectionType.EDUCATION, organizationEducationSection);
         //EXPERIENCE
-        jobOrg1 = new Organization(new Link("Завод 1", "http://zavod1.ru"), dateFormat.parse("01-01-2000"), dateFormat.parse("01-01-2001"), "Младший научный сотрудник", "Работаем и учимся работать11111");
-        jobOrg2 = new Organization(new Link("Завод 2", "http://zavod2.ru"), dateFormat.parse("01-01-2001"), dateFormat.parse("01-01-2002"), "Научный сотрудник", "Работаем и учимся работать22222");
+        jobOrg1 = new Organization(new Link("Завод 1", "http://zavod1.ru"), LocalDate.of(2000, 01, 01), LocalDate.of(2001, 01, 01), "Младший научный сотрудник", "Работаем и учимся работать11111");
+        jobOrg2 = new Organization(new Link("Завод 2", "http://zavod2.ru"), LocalDate.of(2001, 01, 01), LocalDate.of(2002, 01, 01), "Научный сотрудник", "Работаем и учимся работать22222");
         organizationsJobEducation.add(jobOrg1);
         organizationsJobEducation.add(jobOrg2);
         organizationJobSection = new OrganizationSection("Опыт работы", organizationsJobEducation);
@@ -60,7 +56,6 @@ public class TestResume {
         //PERSONAL
         textPersonalSection = new TextSection("Личные качества", "Описание личные качества");
         resume.setSections(SectionType.PERSONAL, textPersonalSection);
-
 
 
         //Contacts data

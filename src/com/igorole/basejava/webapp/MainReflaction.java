@@ -10,6 +10,6 @@ public class MainReflaction {
         Resume r = new Resume("123456");
         Method m = r.getClass().getMethod("toString");
         String s = (String) m.invoke(r);
-       System.out.println(s);
+        System.out.println(s);
     }
 }
