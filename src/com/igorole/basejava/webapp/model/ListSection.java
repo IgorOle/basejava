@@ -1,24 +1,43 @@
 package com.igorole.basejava.webapp.model;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ListSection implements Section {
-    private final String title;
-    private ArrayList<String> stringList = new ArrayList<>();
+    private final List<String> items;
 
-    public ListSection(String title, ArrayList<String> stringList) {
-        this.title = title;
-        this.stringList = stringList;
+    public ListSection(List<String> items) {
+        Objects.requireNonNull(items, "items must not be null");
+        this.items = items;
     }
 
+    public List<String> getItems() {
+        return items;
+    }
+
+    @Override
+    public String toString() {
+        return items.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ListSection that = (ListSection) o;
+
+        return items.equals(that.items);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return items.hashCode();
+    }
+
+    @Override
     public String getHTMLTextSection() {
-        StringBuilder result = new StringBuilder();
-        result.append("<bold>" + title + "</bold>" + "<p>");
-        result.append("<ul>");
-        for (String string : stringList) {
-            result.append("<li>" + string + "</li><p>");
-        }
-        result.append("</ul>");
-        return result.toString();
+        return null;
     }
 }

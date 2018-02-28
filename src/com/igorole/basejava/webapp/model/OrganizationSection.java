@@ -1,29 +1,39 @@
 package com.igorole.basejava.webapp.model;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class OrganizationSection implements Section {
-    ArrayList<Organization> organizations;
-    private final String title;
+    private final List<Organization> organizations;
 
-    public OrganizationSection(String title, ArrayList<Organization> organizations) {
+    public OrganizationSection(List<Organization> organizations) {
+        Objects.requireNonNull(organizations, "organizations must not be null");
         this.organizations = organizations;
-        this.title = title;
+    }
+
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrganizationSection that = (OrganizationSection) o;
+        return organizations.equals(that.organizations);
+    }
+
+    @Override
+    public int hashCode() {
+        return organizations.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return organizations.toString();
     }
 
     public String getHTMLTextSection() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        StringBuilder result = new StringBuilder();
-        result.append("<bold>" + title + "</bold>" + "<p>");
-        result.append("<table>");
-        for (Organization organization : organizations) {
-            result.append("<tr><td colspan=2>" + organization.getLink().getHTMLText() + "</td></tr><p>");
-            result.append("<tr><td>" + organization.getDateStart().format(dtf) + " - " + organization.getDateEnd().format(dtf) + "</td>"
-                    + "<td>" + organization.getTitle() + "<p>" + organization.getText() + "</td></tr>");
-        }
-        result.append("</table>");
-        return result.toString();
+        return "";
     }
 }
-
