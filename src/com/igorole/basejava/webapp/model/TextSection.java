@@ -1,8 +1,9 @@
 package com.igorole.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class TextSection implements Section {
+public class TextSection implements Section, Serializable {
     private final String content;
 
     public TextSection(String content) {
@@ -25,9 +26,7 @@ public class TextSection implements Section {
         if (o == null || getClass() != o.getClass()) return false;
 
         TextSection that = (TextSection) o;
-
         return content.equals(that.content);
-
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.igorole.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Link {
+public class Link implements Serializable {
     private String name;
     private String url;
 
@@ -22,7 +23,4 @@ public class Link {
         return url;
     }
 
-    public String getHTMLText() {
-        return "<a href=" + getUrl() + ">" + getName() + "</a>";
-    }
 }

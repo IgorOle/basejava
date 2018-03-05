@@ -1,10 +1,11 @@
 package com.igorole.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
     private final String uuid;
     private final String fullName;
     private EnumMap<ContactType, String> contactData = new EnumMap<>(ContactType.class);

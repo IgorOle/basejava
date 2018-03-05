@@ -1,5 +1,6 @@
 package com.igorole.basejava.webapp.storage;
 
+import com.igorole.basejava.webapp.GenerateResume;
 import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
@@ -7,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,10 +26,20 @@ public class AbstractStorageTest {
 
     @Before
     public void init() {
-        r1 = new Resume("uuid1", "ResumeA");
-        r2 = new Resume("uuid2", "ResumeB");
-        r3 = new Resume("uuid32", "ResumeC");
-        r4 = new Resume("uuid31", "ResumeC");
+        storage.clear();
+//        r1 = new Resume("uuid1", "ResumeA");
+//        r2 = new Resume("uuid2", "ResumeB");
+//        r3 = new Resume("uuid32", "ResumeC");
+//        r4 = new Resume("uuid31", "ResumeC");
+        try {
+            r1 = GenerateResume.genResume("uuid1");
+            r2 = GenerateResume.genResume("uuid2");
+            r3 = GenerateResume.genResume("uuid32");
+            r4 = GenerateResume.genResume("uuid31");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         saveStorage();
     }
 
@@ -37,7 +49,7 @@ public class AbstractStorageTest {
     }
 
     @Test(expected = ExistStorageException.class)
-    public void save() throws Exception {
+    public void save() {
         storage.save(r1);
     }
 
@@ -49,7 +61,7 @@ public class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void delete() throws Exception {
+    public void delete() {
         storage.delete(r1.getUuid());
         System.out.println(storage.size());
         assertTrue(countElemets - 1 == storage.size());
@@ -57,13 +69,13 @@ public class AbstractStorageTest {
     }
 
     @Test
-    public void clear() throws Exception {
+    public void clear() {
         storage.clear();
         assertEquals(0, storage.size());
     }
 
     @Test
-    public void getAllSorted() throws Exception {
+    public void getAllSorted() {
         List<Resume> resultArr = storage.getAllSorted();
         List<Resume> expectedArr = Arrays.asList(r1, r2, r4, r3);
         Assert.assertEquals(expectedArr, resultArr);
@@ -71,7 +83,7 @@ public class AbstractStorageTest {
     }
 
     @Test
-    public void size() throws Exception {
+    public void size() {
         assertEquals(countElemets, storage.size());
     }
 

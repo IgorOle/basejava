@@ -1,9 +1,10 @@
 package com.igorole.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection implements Section {
+public class ListSection implements Section, Serializable {
     private final List<String> items;
 
     public ListSection(List<String> items) {
@@ -24,11 +25,8 @@ public class ListSection implements Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ListSection that = (ListSection) o;
-
         return items.equals(that.items);
-
     }
 
     @Override
