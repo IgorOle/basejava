@@ -4,6 +4,7 @@ import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -62,7 +63,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract SK getSearchKey(String uuid);
 
-    protected abstract Resume doGet(SK pos);
+    protected abstract Resume doGet(SK pos) throws IOException;
 
     protected abstract List<Resume> getAllList();
 }
