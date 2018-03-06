@@ -38,7 +38,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doDelete(File file) {
-        file.delete();
+        if (!file.delete()) {
+            throw new StorageException("Delete error. File is ", file.getName());
+        }
     }
 
     @Override
@@ -53,18 +55,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         } catch (IOException e) {
             throw new StorageException("Read error. File name is ", file.getName());
         }
-//        Resume r = null;
-//        try (FileInputStream fin = new FileInputStream(file.getAbsolutePath());
-//             ObjectInputStream ois = new ObjectInputStream(fin)) {
-//            r = (Resume) ois.readObject();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return r;
     }
 
     @Override
@@ -91,17 +81,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return directory.listFiles().length;
     }
 
-//    @Override
-//    public void insert(File file, Resume r) {
-//        try (FileOutputStream fout = new FileOutputStream(file.getAbsolutePath());
-//             ObjectOutputStream oos = new ObjectOutputStream(fout)) {
-//            oos.writeObject(r);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    public void insert(File file, Resume r) {
+        try (FileOutputStream fout = new FileOutputStream(file.getAbsolutePath());
+             ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+            oos.writeObject(r);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     protected abstract void doWrite(Resume r, File file) throws IOException;
     protected abstract Resume doRead(File file) throws IOException;
 }
