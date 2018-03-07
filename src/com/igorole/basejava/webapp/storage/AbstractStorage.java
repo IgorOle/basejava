@@ -21,7 +21,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         doUpdate(getExistedIndex(r.getUuid()), r);
     }
 
-    public Resume get(String uuid) {
+    public Resume get(String uuid) throws IOException {
         return doGet(getExistedIndex(uuid));
     }
 
