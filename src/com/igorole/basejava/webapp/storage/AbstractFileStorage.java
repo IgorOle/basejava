@@ -74,7 +74,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File [] files = directory.listFiles();
         if (files == null) throw new StorageException("Storage is empty.", "");
         for (File file : files) {
-            if (file.isFile()) file.delete();
+            doDelete(file);
         }
     }
 
