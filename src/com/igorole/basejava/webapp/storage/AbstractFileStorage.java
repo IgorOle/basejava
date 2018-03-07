@@ -3,7 +3,8 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -59,9 +60,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public List<Resume> getAllList() {
-        if (directory.listFiles() == null) return null;
-        List<Resume> list = new ArrayList<Resume>();
-        for (File file : directory.listFiles()) {
+        File [] files = directory.listFiles();
+        if (files == null) throw new StorageException("Storage is empty.", "");
+        List<Resume> list = new ArrayList<>();
+        for (File file : files) {
             list.add(doGet(file));
         }
         return list;
@@ -69,27 +71,26 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        if (directory.listFiles() == null) return;
-        for (File file : directory.listFiles()) {
+        File [] files = directory.listFiles();
+        if (files == null) throw new StorageException("Storage is empty.", "");
+        for (File file : files) {
             if (file.isFile()) file.delete();
         }
     }
 
     @Override
     public int size() {
-        if (directory.listFiles() == null) return 0;
-        return directory.listFiles().length;
+        String [] files = directory.list();
+        if (files == null) throw new StorageException("Storage is empty.", "");
+        return files.length;
     }
 
     @Override
     public void insert(File file, Resume r) {
-        try (FileOutputStream fout = new FileOutputStream(file.getAbsolutePath());
-             ObjectOutputStream oos = new ObjectOutputStream(fout)) {
-            oos.writeObject(r);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        try {
+            doWrite(r, file);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StorageException("Write error. File name is ", r.getUuid());
         }
     }
     protected abstract void doWrite(Resume r, File file) throws IOException;
