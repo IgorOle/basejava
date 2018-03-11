@@ -3,8 +3,7 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +30,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(File file, Resume r) {
         try {
-            doWrite(r, file);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Write error. File name is ", r.getUuid());
         }
@@ -52,7 +51,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public Resume doGet(File file) {
         try {
-            return doRead(file);
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Read error. File name is ", file.getName());
         }
@@ -88,11 +87,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void insert(File file, Resume r) {
         try {
-            doWrite(r, file);
+            doWrite(r, new FileOutputStream(file));
         } catch (IOException e) {
             throw new StorageException("Write error. File name is ", r.getUuid());
         }
     }
-    protected abstract void doWrite(Resume r, File file) throws IOException;
-    protected abstract Resume doRead(File file) throws IOException;
+    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
+    protected abstract Resume doRead(InputStream file) throws IOException;
 }
