@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +62,7 @@ public class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void delete() {
+    public void delete() throws IOException {
         storage.delete(r1.getUuid());
         System.out.println(storage.size());
         assertTrue(countElemets - 1 == storage.size());

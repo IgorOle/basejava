@@ -3,10 +3,11 @@ package com.igorole.basejava.webapp;
 import com.igorole.basejava.webapp.storage.FileStorage;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 
 public class TestFileStorage {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
         FileStorage fileStorage = new FileStorage(new File("D:/igo/storageDir"));
         fileStorage.clear();
         for (int i = 0; i < 5; i++) {
