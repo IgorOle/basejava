@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Organization implements Serializable{
+    private static final long serialVersionUID = 1L;
     private class Activity implements Comparable<Activity>, Serializable {
         private final LocalDate startDate;
         private final LocalDate endDate;

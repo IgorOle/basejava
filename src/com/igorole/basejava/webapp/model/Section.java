@@ -1,5 +1,7 @@
 package com.igorole.basejava.webapp.model;
 
-public interface Section {
+import java.io.Serializable;
+
+public interface Section extends Serializable{
     String getHTMLTextSection();
 }

@@ -1,10 +1,10 @@
 package com.igorole.basejava.webapp.model;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection implements Section, Serializable {
+public class ListSection implements Section {
+    private static final long serialVersionUID = 1L;
     private final List<String> items;
 
     public ListSection(List<String> items) {
