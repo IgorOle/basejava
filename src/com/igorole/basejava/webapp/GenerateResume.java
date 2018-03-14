@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class GenerateResume {
 
-    public static Resume genResume(String postfix) throws ParseException {
+    public static Resume genResume(String postfix)  {
         String fullName = "Иванов" + postfix + " Иван Иванович";
         OrganizationSection organizationEducationSection;
         OrganizationSection organizationJobSection;
