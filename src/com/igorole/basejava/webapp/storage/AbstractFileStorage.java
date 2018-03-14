@@ -59,7 +59,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public List<Resume> getAllList() {
-        File [] files = directory.listFiles();
+        File[] files = directory.listFiles();
         if (files == null) throw new StorageException("Storage is empty.", "");
         List<Resume> list = new ArrayList<>();
         for (File file : files) {
@@ -70,7 +70,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File [] files = directory.listFiles();
+        File[] files = directory.listFiles();
         if (files == null) throw new StorageException("Storage is empty.", "");
         for (File file : files) {
             doDelete(file);
@@ -79,7 +79,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        File [] files = directory.listFiles();
+        File[] files = directory.listFiles();
         if (files == null) throw new StorageException("Storage is empty.", "");
         return files.length;
     }
@@ -92,6 +92,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new StorageException("Write error. File name is ", r.getUuid());
         }
     }
+
     protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
+
     protected abstract Resume doRead(InputStream file) throws IOException;
 }
