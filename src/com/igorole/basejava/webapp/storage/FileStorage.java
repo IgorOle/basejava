@@ -11,11 +11,19 @@ public class FileStorage extends AbstractFileStorage {
 
     @Override
     protected void doWrite(Resume r, OutputStream file) throws IOException {
-
+        try (ObjectOutputStream oos = new ObjectOutputStream(file)) {
+            oos.writeObject(r);
+        }
     }
 
     @Override
     protected Resume doRead(InputStream file) throws IOException {
-        return null;
+        Resume r = null;
+        try (ObjectInputStream ois = new ObjectInputStream(file)) {
+            r = (Resume) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return r;
     }
 }
