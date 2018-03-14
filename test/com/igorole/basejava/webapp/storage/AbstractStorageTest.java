@@ -8,15 +8,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AbstractStorageTest {
-
+    protected static final File STORAGE_DIR = new File("./strg");
     Storage storage;
     Resume r1, r2, r3, r4;
     private final int countElemets = 4;
@@ -32,21 +33,18 @@ public class AbstractStorageTest {
 //        r2 = new Resume("uuid2", "ResumeB");
 //        r3 = new Resume("uuid32", "ResumeC");
 //        r4 = new Resume("uuid31", "ResumeC");
-        try {
-            r1 = GenerateResume.genResume("uuid1");
-            r2 = GenerateResume.genResume("uuid2");
-            r3 = GenerateResume.genResume("uuid32");
-            r4 = GenerateResume.genResume("uuid31");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        r1 = GenerateResume.genResume("uuid1");
+        r2 = GenerateResume.genResume("uuid2");
+        r3 = GenerateResume.genResume("uuid32");
+        r4 = GenerateResume.genResume("uuid31");
 
         saveStorage();
     }
 
     @Test
     public void get() throws Exception {
-        assertSame(r1, storage.get("uuid1"));
+        assertTrue(r1.equals(storage.get("uuid1")));
     }
 
     @Test(expected = ExistStorageException.class)
@@ -58,7 +56,8 @@ public class AbstractStorageTest {
     public void update() throws Exception {
         Resume resumeBefore = r1;
         storage.update(r1);
-        assertTrue(resumeBefore == storage.get("uuid1"));
+        //assertTrue(resumeBefore == storage.get("uuid1"));
+        assertTrue(resumeBefore.equals(storage.get("uuid1")));
     }
 
     @Test(expected = NotExistStorageException.class)
