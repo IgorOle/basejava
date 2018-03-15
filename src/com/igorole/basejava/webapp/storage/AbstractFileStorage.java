@@ -10,8 +10,9 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
+    Stream stream;
 
-    protected AbstractFileStorage(File directory) {
+    protected AbstractFileStorage(File directory, Stream stream) {
         Objects.requireNonNull(directory, "directory cant be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -20,6 +21,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " permission error");
         }
         this.directory = directory;
+        this.stream = stream;
     }
 
     @Override
@@ -29,11 +31,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(File file, Resume r) {
-        try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
-        } catch (IOException e) {
-            throw new StorageException("Write error. File name is ", r.getUuid());
-        }
+       insert(file, r);
     }
 
     @Override
@@ -51,7 +49,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public Resume doGet(File file) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(file)));
+            return stream.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Read error. File name is ", file.getName());
         }
@@ -87,13 +85,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void insert(File file, Resume r) {
         try {
-            doWrite(r, new FileOutputStream(file));
+            stream.doWrite(r, new FileOutputStream(file));
         } catch (IOException e) {
             throw new StorageException("Write error. File name is ", r.getUuid());
         }
     }
-
-    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
-
-    protected abstract Resume doRead(InputStream file) throws IOException;
 }

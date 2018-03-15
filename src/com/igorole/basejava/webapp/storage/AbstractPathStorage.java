@@ -4,8 +4,6 @@ import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -16,10 +14,12 @@ import java.util.Objects;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     private Path directory;
+    Stream stream;
 
-    protected AbstractPathStorage(String dir) {
+    protected AbstractPathStorage(String dir, Stream stream) {
         Objects.requireNonNull(dir, "directory cant be null");
         this.directory = Paths.get(dir);
+        this.stream = stream;
     }
 
     @Override
@@ -50,7 +50,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     public Resume doGet(Path file) {
 
         try {
-            return doRead(Files.newInputStream(file));
+            return stream.doRead(Files.newInputStream(file));
         } catch (IOException e) {
             throw new StorageException("Read error. File name is " + file, null);
         }
@@ -89,13 +89,10 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     public void insert(Path file, Resume r) {
         try {
-            doWrite(r, Files.newOutputStream(file));
+            stream.doWrite(r, Files.newOutputStream(file));
         } catch (IOException e) {
             throw new StorageException("Error insert." + e.getMessage(), null);
         }
     }
 
-    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
-
-    protected abstract Resume doRead(InputStream file) throws IOException;
 }
