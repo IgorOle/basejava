@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
     Stream stream;
 
-    protected AbstractPathStorage(String dir, Stream stream) {
+    public PathStorage(String dir, Stream stream) {
         Objects.requireNonNull(dir, "directory cant be null");
         this.directory = Paths.get(dir);
         this.stream = stream;

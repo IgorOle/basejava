@@ -4,10 +4,10 @@ import com.igorole.basejava.webapp.model.Resume;
 
 import static org.junit.Assert.assertTrue;
 
-public class FileStorageTest extends AbstractStorageTest {
+public class PathStorageTest extends AbstractStorageTest {
 
-    public FileStorageTest() {
-        super(new FileStorage(STORAGE_DIR, new FileStream()));
+    public PathStorageTest() {
+        super(new PathStorage(STORAGE_DIR.toString(), new FileStream()));
     }
 
     @Override
