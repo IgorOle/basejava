@@ -10,9 +10,9 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    Stream stream;
+    StreamIO stream;
 
-    public FileStorage(File directory, Stream stream) {
+    public FileStorage(File directory, StreamIO stream) {
         Objects.requireNonNull(directory, "directory cant be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");

@@ -4,7 +4,7 @@ import com.igorole.basejava.webapp.model.Resume;
 
 import java.io.*;
 
-public class FileStream implements Stream {
+public class FileStream implements StreamIO {
 
     @Override
     public void doWrite(Resume r, OutputStream file) throws IOException {

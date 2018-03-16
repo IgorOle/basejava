@@ -3,7 +3,7 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -11,12 +11,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    Stream stream;
+    StreamIO stream;
 
-    public PathStorage(String dir, Stream stream) {
+    public PathStorage(String dir, StreamIO stream) {
         Objects.requireNonNull(dir, "directory cant be null");
         this.directory = Paths.get(dir);
         this.stream = stream;
@@ -59,31 +60,18 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     public List<Resume> getAllList() {
         List<Resume> list = new ArrayList<>();
-        try {
-            Files.list(directory).forEach(path -> list.add(doGet(path)));
-        } catch (IOException e) {
-            throw new StorageException("Read error from directory ", directory.toString());
-        }
+            getFilesList().forEach(path -> list.add(doGet(path)));
         return list;
-
     }
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Error clear." + e.getMessage(), null);
-        }
+        getFilesList().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Error szie." + e.getMessage(), null);
-        }
+            return (int) getFilesList().count();
     }
 
     @Override
@@ -94,5 +82,13 @@ public class PathStorage extends AbstractStorage<Path> {
             throw new StorageException("Error insert." + e.getMessage(), null);
         }
     }
+    private Stream<Path> getFilesList() {
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Error directory" + e.getMessage(), null);
+        }
+    }
+
 
 }
