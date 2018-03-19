@@ -1,14 +1,20 @@
 package com.igorole.basejava.webapp.model;
 
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
-    private final String uuid;
-    private final String fullName;
+    private String uuid;
+    private String fullName;
     private EnumMap<ContactType, String> contactData = new EnumMap<>(ContactType.class);
     private EnumMap<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
@@ -21,6 +27,9 @@ public class Resume implements Comparable<Resume>, Serializable {
         Objects.requireNonNull(fullName);
         this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public Resume() {
     }
 
     public String getUuid() {
@@ -55,10 +64,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         return uuid.equals(resume.uuid);
     }
 
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
 
     @Override
     public String toString() {
@@ -66,8 +71,17 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + (contactData != null ? contactData.hashCode() : 0);
+        result = 31 * result + (sections != null ? sections.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public int compareTo(Resume o) {
-        int res = fullName.compareTo(o.getFullName());
-        return res == 0 ? uuid.compareTo(o.getUuid()) : res;
+        int cmp = fullName.compareTo(o.fullName);
+        return cmp != 0 ? cmp : uuid.compareTo(o.uuid);
     }
 }

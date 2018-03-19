@@ -3,9 +3,12 @@ package com.igorole.basejava.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection implements Section {
+public class OrganizationSection extends Section {
     private static final long serialVersionUID = 1L;
-    private final List<Organization> organizations;
+    private List<Organization> organizations;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, "organizations must not be null");

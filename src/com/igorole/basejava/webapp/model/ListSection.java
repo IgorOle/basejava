@@ -3,9 +3,12 @@ package com.igorole.basejava.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection implements Section {
+public class ListSection extends Section {
     private static final long serialVersionUID = 1L;
-    private final List<String> items;
+    private List<String> items;
+
+    public ListSection() {
+    }
 
     public ListSection(List<String> items) {
         Objects.requireNonNull(items, "items must not be null");
@@ -34,8 +37,4 @@ public class ListSection implements Section {
         return items.hashCode();
     }
 
-    @Override
-    public String getHTMLTextSection() {
-        return null;
-    }
 }

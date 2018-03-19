@@ -2,13 +2,16 @@ package com.igorole.basejava.webapp.model;
 
 import java.util.Objects;
 
-public class TextSection implements Section {
+public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
-    private final String content;
+    private String content;
 
     public TextSection(String content) {
         Objects.requireNonNull(content, "content must not be null");
         this.content = content;
+    }
+
+    public TextSection() {
     }
 
     public String getContent() {
@@ -34,8 +37,4 @@ public class TextSection implements Section {
         return content.hashCode();
     }
 
-    @Override
-    public String getHTMLTextSection() {
-        return null;
-    }
 }

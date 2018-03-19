@@ -1,6 +1,7 @@
-package com.igorole.basejava.webapp.storage;
+package com.igorole.basejava.webapp.storage.serializer;
 
 import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.storage.serializer.StreamIO;
 
 import java.io.*;
 

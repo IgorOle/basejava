@@ -2,13 +2,14 @@ package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.model.Resume;
 import com.igorole.basejava.webapp.storage.serializer.FileStream;
+import com.igorole.basejava.webapp.storage.serializer.XMLStream;
 
 import static org.junit.Assert.assertTrue;
 
-public class FileStorageTest extends AbstractStorageTest {
+public class XMLStorageTest extends AbstractStorageTest {
 
-    public FileStorageTest() {
-        super(new FileStorage(STORAGE_DIR, new FileStream()));
+    public XMLStorageTest() {
+        super(new PathStorage(STORAGE_DIR.toString(), new XMLStream()));
     }
 
     @Override

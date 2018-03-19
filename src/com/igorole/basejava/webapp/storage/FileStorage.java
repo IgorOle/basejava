@@ -2,6 +2,7 @@ package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.exception.StorageException;
 import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.storage.serializer.StreamIO;
 
 import java.io.*;
 import java.util.ArrayList;

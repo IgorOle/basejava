@@ -1,6 +1,7 @@
 package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.storage.serializer.FileStream;
 
 import static org.junit.Assert.assertTrue;
 
