@@ -20,7 +20,7 @@ public class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File("./strg");
     Storage storage;
     Resume r1, r2, r3, r4;
-    private final int countElemets = 4;
+    public final int countElemets = 4;
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -79,7 +79,6 @@ public class AbstractStorageTest {
         List<Resume> resultArr = storage.getAllSorted();
         List<Resume> expectedArr = Arrays.asList(r1, r2, r4, r3);
         Assert.assertEquals(expectedArr, resultArr);
-        System.out.println(resultArr);
     }
 
     @Test

@@ -50,7 +50,6 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public Resume doGet(Path file) {
-
         try {
             return stream.doRead(Files.newInputStream(file));
         } catch (IOException e) {

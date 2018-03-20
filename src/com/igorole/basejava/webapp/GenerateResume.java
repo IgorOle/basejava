@@ -3,13 +3,12 @@ package com.igorole.basejava.webapp;
 
 import com.igorole.basejava.webapp.model.*;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GenerateResume {
 
-    public static Resume genResume(String postfix)  {
+    public static Resume genResume(String postfix) {
         String fullName = "Иванов" + postfix + " Иван Иванович";
         OrganizationSection organizationEducationSection;
         OrganizationSection organizationJobSection;
@@ -35,7 +34,7 @@ public class GenerateResume {
         organizationsEducation.add(educationOrg1);
         organizationsEducation.add(educationOrg2);
         organizationEducationSection = new OrganizationSection(organizationsEducation);
-        resume.setSections(SectionType.EDUCATION, organizationEducationSection);
+        resume.addSections(SectionType.EDUCATION, organizationEducationSection);
         //EXPERIENCE
         jobOrg1 = new Organization("ООО Ростсельмаш", "http://rsm.ru");
         jobOrg1.addActivity(LocalDate.of(2001, 01, 01), LocalDate.of(2002, 01, 01), "Новичек", "Работаем и учимся работать11111");
@@ -45,26 +44,26 @@ public class GenerateResume {
         jobOrg1.addActivity(LocalDate.of(2003, 01, 01), LocalDate.of(2008, 01, 01), "Научный сотрудник", "Продолжаем учиться и работать3333");
         organizationsJobEducation.add(jobOrg2);
         organizationJobSection = new OrganizationSection(organizationsJobEducation);
-        resume.setSections(SectionType.EXPERIENCE, organizationJobSection);
+        resume.addSections(SectionType.EXPERIENCE, organizationJobSection);
         //ACHIEVEMENT          SectionType.ACHIEVEMENT
         achievement.add("Достижения 1111 1 11 1 1 ");
         achievement.add("Достижения 222222222222222 23 32322");
         listAchiSection = new ListSection(achievement);
-        resume.setSections(SectionType.ACHIEVEMENT, listAchiSection);
+        resume.addSections(SectionType.ACHIEVEMENT, listAchiSection);
         //QUALIFICATIONS
         qualification.add("язык программирования 1");
         qualification.add("язык программирования 2");
         listQualificationSection = new ListSection(qualification);
-        resume.setSections(SectionType.QUALIFICATIONS, listQualificationSection);
+        resume.addSections(SectionType.QUALIFICATIONS, listQualificationSection);
         //OBJECTIVE
         textObjectiveSection = new TextSection("Описание позиция");
-        resume.setSections(SectionType.OBJECTIVE, textObjectiveSection);
+        resume.addSections(SectionType.OBJECTIVE, textObjectiveSection);
         //PERSONAL
         textPersonalSection = new TextSection("Описание личные качества");
-        resume.setSections(SectionType.PERSONAL, textPersonalSection);
+        resume.addSections(SectionType.PERSONAL, textPersonalSection);
         //Contacts data
-        resume.setContactData(ContactType.PHONE, "+79888887946");
-        resume.setContactData(ContactType.MAIL, "email@ya.ru");
+        resume.addContactData(ContactType.PHONE, "+79888887946");
+        resume.addContactData(ContactType.MAIL, "email@ya.ru");
         return resume;
     }
 }
