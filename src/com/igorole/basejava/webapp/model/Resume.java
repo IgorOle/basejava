@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,8 +16,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
-    private EnumMap<ContactType, String> contactData = new EnumMap<>(ContactType.class);
-    private EnumMap<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -36,12 +37,24 @@ public class Resume implements Comparable<Resume>, Serializable {
         return uuid;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public Map<SectionType, Section> getSections(SectionType key) {
+        return sections;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
     public void addSections(SectionType type, Section sections) {
         this.sections.put(type, sections);
     }
 
-    public void addContactData(ContactType type, String contactData) {
-        this.contactData.put(type, contactData);
+    public void addContact(ContactType type, String contactData) {
+        this.contacts.put(type, contactData);
     }
 
     @Override
@@ -62,7 +75,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     public int hashCode() {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
-        result = 31 * result + (contactData != null ? contactData.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         result = 31 * result + (sections != null ? sections.hashCode() : 0);
         return result;
     }

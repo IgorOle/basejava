@@ -62,8 +62,8 @@ public class GenerateResume {
         textPersonalSection = new TextSection("Описание личные качества");
         resume.addSections(SectionType.PERSONAL, textPersonalSection);
         //Contacts data
-        resume.addContactData(ContactType.PHONE, "+79888887946");
-        resume.addContactData(ContactType.MAIL, "email@ya.ru");
+        resume.addContact(ContactType.PHONE, "+79888887946");
+        resume.addContact(ContactType.MAIL, "email@ya.ru");
         return resume;
     }
 }

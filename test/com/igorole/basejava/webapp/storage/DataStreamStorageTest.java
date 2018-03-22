@@ -1,14 +1,15 @@
 package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.storage.serializer.DataStreamSerializer;
 import com.igorole.basejava.webapp.storage.serializer.JsonStreamSerializer;
 
 import static org.junit.Assert.assertTrue;
 
-public class JsonStorageTest extends AbstractStorageTest {
+public class DataStreamStorageTest extends AbstractStorageTest {
 
-    public JsonStorageTest() {
-        super(new PathStorage(STORAGE_DIR.toString(), new JsonStreamSerializer()));
+    public DataStreamStorageTest() {
+        super(new PathStorage(STORAGE_DIR.toString(), new DataStreamSerializer()));
     }
 
     @Override
