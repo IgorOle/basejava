@@ -41,7 +41,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
-    public Map<SectionType, Section> getSections(SectionType key) {
+    public Map<SectionType, Section> getSections() {
         return sections;
     }
 

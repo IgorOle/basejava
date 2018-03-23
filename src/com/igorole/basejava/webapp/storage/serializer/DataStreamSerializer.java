@@ -3,25 +3,68 @@ package com.igorole.basejava.webapp.storage.serializer;
 import com.igorole.basejava.webapp.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements StreamIO {
 
-    private void parse(String sectionType) {
-        SectionType st = SectionType.valueOf(sectionType);
-        switch (st) {
-            case PERSONAL:
-                break;
-            case EDUCATION:
-                break;
-        }
-
-    }
-
-    private void writeTextSection(DataOutputStream dos, SectionType type, Map.Entry<SectionType, Section> section) throws IOException {
-        dos.writeUTF(type.name());
+    private void writeTextSection(DataOutputStream dos, Map.Entry<SectionType, Section> section) throws IOException {
+        dos.writeUTF(section.getKey().name());
         dos.writeUTF(section.getValue().getClass().getSimpleName());
         dos.writeUTF(((TextSection) section.getValue()).getContent());
+    }
+
+    private void writeListSection(DataOutputStream dos, Map.Entry<SectionType, Section> section) throws IOException {
+        List<String> items = ((ListSection) section.getValue()).getItems();
+        dos.writeUTF(section.getKey().name());
+        dos.writeUTF(section.getValue().getClass().getSimpleName());
+        dos.writeInt(items.size());
+        for (String text : items) {
+            dos.writeUTF(text);
+        }
+    }
+
+    private void writeOrganizationSection(DataOutputStream dos, Map.Entry<SectionType, Section> section) throws IOException {
+        List<Organization> items = ((OrganizationSection) section.getValue()).getOrganizations();
+        dos.writeUTF(section.getKey().name());
+        dos.writeUTF(section.getValue().getClass().getSimpleName());
+        dos.writeInt(items.size());
+        for (Organization organization:items) {
+            ArrayList<Organization.Activity> activities = organization.getActivities();
+            dos.writeUTF(organization.getName());
+            dos.writeUTF(organization.getUrl());
+            dos.writeInt(activities.size());
+            for (Organization.Activity activity : activities){
+                dos.writeUTF(activity.getStartDate().toString());
+                dos.writeUTF(activity.getEndDate().toString());
+                dos.writeUTF(activity.getDescription());
+                dos.writeUTF(activity.getTitle());
+            }
+        }
+    }
+
+    private void readOrganizationSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
+        int count = dis.readInt();
+        List<Organization> organizations = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            Organization organization = new Organization(dis.readUTF(), dis.readUTF());
+//            organization.addActivity(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF());
+        }
+    }
+
+    private void readLineSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
+        int size = dis.readInt();
+        List<String> items = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            items.add(dis.readUTF());
+        }
+        resume.addSections(sectionType, new ListSection(items));
+    }
+
+    private void readTextSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
+        resume.addSections(sectionType, new TextSection(dis.readUTF()));
     }
 
     @Override
@@ -36,18 +79,17 @@ public class DataStreamSerializer implements StreamIO {
                 dos.writeUTF(entry.getValue());
             }
 
-            for (SectionType type : SectionType.values()) {
-                Map<SectionType, Section> sections = r.getSections(type);
-                for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
-                    if (section.getValue() instanceof TextSection) {
-                        writeTextSection(dos, type, section);
-                    } else if (section.getValue() instanceof ListSection) {
-                        //writeTextSection(dos, type, section);
-                    }
+            Map<SectionType, Section> sections = r.getSections();
+            for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
+                if (section.getValue() instanceof TextSection) {
+                    writeTextSection(dos, section);
+                } else if (section.getValue() instanceof ListSection) {
+                    writeListSection(dos, section);
+                } else if (section.getValue() instanceof OrganizationSection) {
+                    writeOrganizationSection(dos, section);
                 }
             }
         }
-
     }
 
     @Override
@@ -60,13 +102,23 @@ public class DataStreamSerializer implements StreamIO {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            while (dis.) {
-                String sectionType = dis.readUTF();
-                System.out.println(sectionType);
+            while (dis.available() > 0) {
+                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                String classSection = dis.readUTF();
+                switch (classSection) {
+                    case "TextSection":
+                        readTextSection(dis, sectionType, resume);
+                        break;
+                    case "ListSection":
+                        readLineSection(dis, sectionType, resume);
+                        break;
+                    case "OrganizationSection":
+                        readOrganizationSection(dis, sectionType, resume);
+                        break;
+                }
             }
             return resume;
         }
     }
-
 
 }

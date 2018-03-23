@@ -24,6 +24,22 @@ public class Organization implements Serializable {
             this.title = title;
         }
 
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
         @Override
         public int compareTo(Activity o) {
             return startDate.compareTo(o.startDate);
@@ -33,15 +49,31 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
-    private Link homePage;
     private ArrayList<Activity> activities = new ArrayList<>();
+    private Link homePage;
+    private String name;
+    private String url;
 
     public Organization(String name, String url) {
+        this.name = name;
+        this.url = url;
         this.homePage = new Link(name, url);
     }
 
     public void addActivity(LocalDate startDate, LocalDate endDate, String title, String description) {
         this.activities.add(new Activity(startDate, endDate, title, description));
+    }
+
+    public ArrayList<Activity> getActivities() {
+        return activities;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
