@@ -95,7 +95,7 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "Organization{" +
+        return "Organization{ " +
                 "homePage=" + homePage +
                 ", list=" + activities +
                 '}';
