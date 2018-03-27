@@ -37,7 +37,4 @@ public class OrganizationSection extends Section {
         return organizations.toString();
     }
 
-    public String getHTMLTextSection() {
-        return "";
-    }
 }
