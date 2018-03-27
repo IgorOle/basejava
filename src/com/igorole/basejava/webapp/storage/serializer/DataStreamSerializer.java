@@ -10,9 +10,73 @@ import java.util.Map;
 
 public class DataStreamSerializer implements StreamIO {
 
+
+    @Override
+    public void doWrite(Resume r, OutputStream os) throws IOException {
+        try (DataOutputStream dos = new DataOutputStream(os)) {
+            dos.writeUTF(r.getUuid());
+            dos.writeUTF(r.getFullName());
+            Map<ContactType, String> contacts = r.getContacts();
+            dos.writeInt(contacts.size());
+            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(entry.getValue());
+            }
+
+            Map<SectionType, Section> sections = r.getSections();
+            for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
+                SectionType type = section.getKey();
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        writeTextSection(dos, section);
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        writeListSection(dos, section);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        writeOrganizationSection(dos, section);
+                        break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public Resume doRead(InputStream is) throws IOException {
+        try (DataInputStream dis = new DataInputStream(is)) {
+            String uuid = dis.readUTF();
+            String fullName = dis.readUTF();
+            Resume resume = new Resume(uuid, fullName);
+            int size = dis.readInt();
+            for (int i = 0; i < size; i++) {
+                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
+            }
+            while (dis.available() > 0) {
+                SectionType type = SectionType.valueOf(dis.readUTF());
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        readTextSection(dis, type, resume);
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        readListSection(dis, type, resume);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        readOrganizationSection(dis, type, resume);
+                        break;
+                }
+            }
+            return resume;
+        }
+    }
+
     private void writeHead(DataOutputStream dos, Map.Entry<SectionType, Section> section, int len) throws IOException {
         dos.writeUTF(section.getKey().name());
-        dos.writeUTF(section.getValue().getClass().getSimpleName());
         dos.writeInt(len);
     }
 
@@ -35,15 +99,19 @@ public class DataStreamSerializer implements StreamIO {
         for (Organization organization : items) {
             ArrayList<Organization.Activity> activities = organization.getActivities();
             dos.writeUTF(organization.getName());
-            dos.writeUTF(organization.getUrl());
+            dos.writeUTF(getValue(organization.getUrl()));
             dos.writeInt(activities.size());
             for (Organization.Activity activity : activities) {
                 dos.writeUTF(activity.getStartDate().toString());
                 dos.writeUTF(activity.getEndDate().toString());
-                dos.writeUTF(activity.getDescription());
+                dos.writeUTF(getValue(activity.getDescription()));
                 dos.writeUTF(activity.getTitle());
             }
         }
+    }
+
+    private String getValue(String value) {
+        return value == null ? "" : value;
     }
 
     private void readOrganizationSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
@@ -60,7 +128,7 @@ public class DataStreamSerializer implements StreamIO {
         resume.addSections(sectionType, new OrganizationSection(organizations));
     }
 
-    private void readLineSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
+    private void readListSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
         int size = dis.readInt();
         List<String> items = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -72,60 +140,6 @@ public class DataStreamSerializer implements StreamIO {
     private void readTextSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
         dis.readInt();
         resume.addSections(sectionType, new TextSection(dis.readUTF()));
-    }
-
-    @Override
-    public void doWrite(Resume r, OutputStream os) throws IOException {
-        try (DataOutputStream dos = new DataOutputStream(os)) {
-            dos.writeUTF(r.getUuid());
-            dos.writeUTF(r.getFullName());
-            Map<ContactType, String> contacts = r.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            }
-
-            Map<SectionType, Section> sections = r.getSections();
-            for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
-                if (section.getValue() instanceof TextSection) {
-                    writeTextSection(dos, section);
-                } else if (section.getValue() instanceof ListSection) {
-                    writeListSection(dos, section);
-                } else if (section.getValue() instanceof OrganizationSection) {
-                    writeOrganizationSection(dos, section);
-                }
-            }
-        }
-    }
-
-    @Override
-    public Resume doRead(InputStream is) throws IOException {
-        try (DataInputStream dis = new DataInputStream(is)) {
-            String uuid = dis.readUTF();
-            String fullName = dis.readUTF();
-            Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            while (dis.available() > 0) {
-                SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                String classSection = dis.readUTF();
-                switch (classSection) {
-                    case "TextSection":
-                        readTextSection(dis, sectionType, resume);
-                        break;
-                    case "ListSection":
-                        readLineSection(dis, sectionType, resume);
-                        break;
-                    case "OrganizationSection":
-                        readOrganizationSection(dis, sectionType, resume);
-                        break;
-                }
-            }
-            return resume;
-        }
     }
 
 }

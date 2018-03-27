@@ -36,7 +36,7 @@ public class GenerateResume {
         organizationEducationSection = new OrganizationSection(organizationsEducation);
         resume.addSections(SectionType.EDUCATION, organizationEducationSection);
         //EXPERIENCE
-        jobOrg1 = new Organization("ООО Ростсельмаш", "http://rsm.ru");
+        jobOrg1 = new Organization("ООО Ростсельмаш", null);
         jobOrg1.addActivity(LocalDate.of(2001, 01, 01), LocalDate.of(2002, 01, 01), "Новичек", "Работаем и учимся работать11111");
         jobOrg1.addActivity(LocalDate.of(2002, 01, 01), LocalDate.of(2003, 01, 01), "Продвинутый новичек", "Продолжаем учиться и работать22222");
         organizationsJobEducation.add(jobOrg1);
