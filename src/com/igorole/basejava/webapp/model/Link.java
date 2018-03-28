@@ -16,6 +16,20 @@ public class Link implements Serializable {
         this.url = url;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Link link = (Link) o;
+        return Objects.equals(name, link.name) &&
+                Objects.equals(url, link.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url);
+    }
+
     public String getName() {
         return name;
     }

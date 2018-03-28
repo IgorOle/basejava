@@ -8,19 +8,19 @@ import java.util.Objects;
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public static class Activity implements Comparable<Activity>, Serializable {
+    public static class Activity implements Serializable {
         private LocalDate startDate;
         private LocalDate endDate;
         private String description;
         private String title;
 
-        public Activity(LocalDate startDate, LocalDate endDate, String description, String title) {
+        public Activity(LocalDate startDate, LocalDate endDate, String title, String description) {
             Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "startDate must not be null");
             Objects.requireNonNull(title, "title must not be null");
             this.startDate = startDate;
             this.endDate = endDate;
-            this.description = description;
+            this.description = (description == null ? "" : description);
             this.title = title;
         }
 
@@ -41,8 +41,19 @@ public class Organization implements Serializable {
         }
 
         @Override
-        public int compareTo(Activity o) {
-            return startDate.compareTo(o.startDate);
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Activity activity = (Activity) o;
+            return Objects.equals(startDate, activity.startDate) &&
+                    Objects.equals(endDate, activity.endDate) &&
+                    Objects.equals(description, activity.description) &&
+                    Objects.equals(title, activity.title);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(startDate, endDate, description, title);
         }
     }
 
@@ -56,8 +67,8 @@ public class Organization implements Serializable {
 
     public Organization(String name, String url) {
         this.name = name;
-        this.url = url;
-        this.homePage = new Link(name, url);
+        this.url = (url == null ? "" : url);
+        this.homePage = new Link(name, this.url);
     }
 
     public void addActivity(LocalDate startDate, LocalDate endDate, String title, String description) {
@@ -80,12 +91,9 @@ public class Organization implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Organization that = (Organization) o;
-
         if (!homePage.equals(that.homePage)) return false;
-        if (!activities.containsAll(((Organization) o).activities)) return false;
-        return false;
+        return activities.equals(that.activities);
     }
 
     @Override

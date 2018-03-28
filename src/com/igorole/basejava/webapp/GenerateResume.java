@@ -27,17 +27,17 @@ public class GenerateResume {
         Resume resume = new Resume(postfix, fullName);
         //Education
         educationOrg1 = new Organization("РГУ", "http://rgu.ru");
-        educationOrg1.addActivity(LocalDate.of(1990, 01, 01), LocalDate.of(1995, 01, 01), "", "Курс молодого бойца1");
+        educationOrg1.addActivity(LocalDate.of(1990, 01, 01), LocalDate.of(1995, 01, 01), "t", "Курс молодого бойца1");
         educationOrg1.addActivity(LocalDate.of(1995, 01, 01), LocalDate.of(2000, 01, 01), "", "Курс молодого бойца2");
         educationOrg2 = new Organization("МГУ", "http://mgu.ru");
-        educationOrg2.addActivity(LocalDate.of(2000, 01, 01), LocalDate.of(2001, 01, 01), "", "Курс молодого бойца2");
+        educationOrg2.addActivity(LocalDate.of(2000, 01, 01), LocalDate.of(2001, 01, 01), "", null);
         organizationsEducation.add(educationOrg1);
         organizationsEducation.add(educationOrg2);
         organizationEducationSection = new OrganizationSection(organizationsEducation);
         resume.addSections(SectionType.EDUCATION, organizationEducationSection);
         //EXPERIENCE
         jobOrg1 = new Organization("ООО Ростсельмаш", null);
-        jobOrg1.addActivity(LocalDate.of(2001, 01, 01), LocalDate.of(2002, 01, 01), "Новичек", "Работаем и учимся работать11111");
+        jobOrg1.addActivity(LocalDate.of(2001, 01, 01), LocalDate.of(2002, 01, 01), "Новечек", "Работаем и учимся работать11111");
         jobOrg1.addActivity(LocalDate.of(2002, 01, 01), LocalDate.of(2003, 01, 01), "Продвинутый новичек", "Продолжаем учиться и работать22222");
         organizationsJobEducation.add(jobOrg1);
         jobOrg2 = new Organization("ПАО НИИ", "http://nii.ru");

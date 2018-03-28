@@ -29,10 +29,6 @@ public class AbstractStorageTest {
     @Before
     public void init() {
         storage.clear();
-//        r1 = new Resume("uuid1", "ResumeA");
-//        r2 = new Resume("uuid2", "ResumeB");
-//        r3 = new Resume("uuid32", "ResumeC");
-//        r4 = new Resume("uuid31", "ResumeC");
 
         r1 = GenerateResume.genResume("uuid1");
         r2 = GenerateResume.genResume("uuid2");
@@ -56,7 +52,6 @@ public class AbstractStorageTest {
     public void update() throws Exception {
         Resume resumeBefore = r1;
         storage.update(r1);
-        //assertTrue(resumeBefore == storage.get("uuid1"));
         assertTrue(resumeBefore.equals(storage.get("uuid1")));
     }
 

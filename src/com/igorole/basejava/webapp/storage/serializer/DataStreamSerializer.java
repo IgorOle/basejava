@@ -81,7 +81,7 @@ public class DataStreamSerializer implements StreamIO {
     }
 
     private void writeTextSection(DataOutputStream dos, Map.Entry<SectionType, Section> section) throws IOException {
-        writeHead(dos, section, 1);
+        dos.writeUTF(section.getKey().name());
         dos.writeUTF(((TextSection) section.getValue()).getContent());
     }
 
@@ -99,19 +99,15 @@ public class DataStreamSerializer implements StreamIO {
         for (Organization organization : items) {
             ArrayList<Organization.Activity> activities = organization.getActivities();
             dos.writeUTF(organization.getName());
-            dos.writeUTF(getValue(organization.getUrl()));
+            dos.writeUTF(organization.getUrl());
             dos.writeInt(activities.size());
             for (Organization.Activity activity : activities) {
                 dos.writeUTF(activity.getStartDate().toString());
                 dos.writeUTF(activity.getEndDate().toString());
-                dos.writeUTF(getValue(activity.getDescription()));
                 dos.writeUTF(activity.getTitle());
+                dos.writeUTF(activity.getDescription());
             }
         }
-    }
-
-    private String getValue(String value) {
-        return value == null ? "" : value;
     }
 
     private void readOrganizationSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
@@ -138,7 +134,6 @@ public class DataStreamSerializer implements StreamIO {
     }
 
     private void readTextSection(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
-        dis.readInt();
         resume.addSections(sectionType, new TextSection(dis.readUTF()));
     }
 
