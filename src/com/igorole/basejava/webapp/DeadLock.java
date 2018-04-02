@@ -1,7 +1,5 @@
 package com.igorole.basejava.webapp;
 
-import java.util.Random;
-
 class Account {
     private String AccName;
     private String Account;
@@ -13,14 +11,6 @@ class Account {
         Balance = balance;
     }
 
-    public float getBalance() {
-        return Balance;
-    }
-
-    public String getAccount() {
-        return Account;
-    }
-
     public void deduct(Float val) {
         this.Balance -= val;
     }
@@ -30,25 +20,21 @@ class Account {
     }
 }
 
-class Operations implements Runnable {
+class Operations extends Thread {
     private final Account Dt;
     private final Account Kt;
     private final Float Val;
-    private final int Sleep;
-    private String name;
 
-    public Operations(Account Dt, Account Kt, float Val, int Sleep, String name) {
+    public Operations(Account Dt, Account Kt, float Val) {
         this.Dt = Dt;
         this.Kt = Kt;
         this.Val = Val;
-        this.Sleep = Sleep;
-        this.name = name;
     }
 
     void todo(Account Dt, Account Kt, Float sum) {
         synchronized (Dt) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -57,16 +43,13 @@ class Operations implements Runnable {
                 Kt.add(sum);
             }
         }
-        System.out.println("---" + this.name + " " + Dt.getAccount() + " " + Kt.getAccount());
     }
 
     @Override
     public void run() {
-        todo(Dt, Kt, Val);
         System.out.println(this);
+        todo(Dt, Kt, Val);
     }
-
-
 }
 
 public class DeadLock {
@@ -74,14 +57,12 @@ public class DeadLock {
         Account acc1 = new Account("acc1", "40802810..1", 100f);
         Account acc2 = new Account("acc2", "40802810..2", 100f);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             if (i % 2 == 0) {
-                (new Operations(acc1, acc2, 10, new Random().nextInt(3), "thread" + i)).run();
+                (new Operations(acc1, acc2, 10)).start();
             } else {
-                (new Operations(acc2, acc1, 10, new Random().nextInt(4), "thread" + i)).run();
+                (new Operations(acc2, acc1, 10)).start();
             }
         }
-
-        System.out.println("sum = " + (acc1.getBalance() + acc2.getBalance()));
     }
 }
