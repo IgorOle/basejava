@@ -20,8 +20,7 @@ public class DataStreamStorageTest extends AbstractStorageTest {
     @Override
     public void update() throws Exception {
         Resume resumeBefore = r1;
-        //storage.update(r1);
-        System.out.println(storage.get("uuid1").equals(resumeBefore));
+        storage.update(r1);
         assertTrue(storage.get("uuid1").equals(resumeBefore));
     }
 
