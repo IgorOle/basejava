@@ -1,5 +1,6 @@
 package com.igorole.basejava.webapp.storage;
 
+import com.igorole.basejava.webapp.Config;
 import com.igorole.basejava.webapp.GenerateResume;
 import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
@@ -7,6 +8,7 @@ import com.igorole.basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +18,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("./strg");
+public class    AbstractStorageTest {
+    protected static final File STORAGE_DIR = com.igorole.basejava.webapp.Config.get().getStorageDir();
     Storage storage;
     Resume r1, r2, r3, r4;
     public final int countElemets = 4;
@@ -29,12 +31,10 @@ public class AbstractStorageTest {
     @Before
     public void init() {
         storage.clear();
-
-        r1 = GenerateResume.genResume("uuid1");
-        r2 = GenerateResume.genResume("uuid2");
-        r3 = GenerateResume.genResume("uuid32");
-        r4 = GenerateResume.genResume("uuid31");
-
+        r1 = new Resume("uuid1", "FullName1");
+        r2 = new Resume("uuid1", "FullName2");
+        r3 = new Resume("uuid1", "FullName3");
+        r4 = new Resume("uuid1", "FullName4");
         saveStorage();
     }
 
