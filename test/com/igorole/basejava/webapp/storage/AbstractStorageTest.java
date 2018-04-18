@@ -1,14 +1,11 @@
 package com.igorole.basejava.webapp.storage;
 
-import com.igorole.basejava.webapp.Config;
-import com.igorole.basejava.webapp.GenerateResume;
 import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -32,9 +29,9 @@ public class    AbstractStorageTest {
     public void init() {
         storage.clear();
         r1 = new Resume("uuid1", "FullName1");
-        r2 = new Resume("uuid1", "FullName2");
-        r3 = new Resume("uuid1", "FullName3");
-        r4 = new Resume("uuid1", "FullName4");
+        r2 = new Resume("uuid2", "FullName2");
+        r3 = new Resume("uuid3", "FullName3");
+        r4 = new Resume("uuid4", "FullName4");
         saveStorage();
     }
 
@@ -60,7 +57,7 @@ public class    AbstractStorageTest {
         storage.delete(r1.getUuid());
         System.out.println(storage.size());
         assertTrue(countElemets - 1 == storage.size());
-        storage.get("uuid1");
+        storage.delete("uuid1");
     }
 
     @Test
@@ -72,7 +69,7 @@ public class    AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> resultArr = storage.getAllSorted();
-        List<Resume> expectedArr = Arrays.asList(r1, r2, r4, r3);
+        List<Resume> expectedArr = Arrays.asList(r1, r2, r3, r4);
         Assert.assertEquals(expectedArr, resultArr);
     }
 
