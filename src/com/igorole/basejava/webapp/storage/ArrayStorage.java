@@ -20,7 +20,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     protected Integer getSearchKey(String uuid) {
-        if (size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", null);
+        if (size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", uuid, null);
         for (int i = 0; i < size; i++) {
             if (storage[i] != null && storage[i].getUuid().equals(uuid)) {
                 return i;

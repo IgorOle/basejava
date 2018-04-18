@@ -12,7 +12,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insert(Integer pos, Resume r) {
-        if (size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", null);
+        if (size == AbstractArrayStorage.STORAGE_LIMIT) throw new StorageException("Array is full", r.getUuid(), null);
         int insertIdx = -(pos) - 1;
         System.arraycopy(storage, insertIdx, storage, insertIdx + 1, size - insertIdx);
         storage[insertIdx] = r;

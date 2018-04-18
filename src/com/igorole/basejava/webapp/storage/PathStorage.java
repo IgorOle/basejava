@@ -39,7 +39,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(file);
         } catch (IOException e) {
-            throw new StorageException("Delete error. File is " + file.getFileName(), null);
+            throw new StorageException("Delete error. File is " + file.getFileName(), null, e);
         }
     }
 
@@ -53,14 +53,14 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return stream.doRead(Files.newInputStream(file));
         } catch (IOException e) {
-            throw new StorageException("Read error. File name is " + file, null);
+            throw new StorageException("Read error. File name is " + file, null, e);
         }
     }
 
     @Override
     public List<Resume> getAllList() {
         List<Resume> list = new ArrayList<>();
-            getFilesList().forEach(path -> list.add(doGet(path)));
+        getFilesList().forEach(path -> list.add(doGet(path)));
         return list;
     }
 
@@ -71,7 +71,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public int size() {
-            return (int) getFilesList().count();
+        return (int) getFilesList().count();
     }
 
     @Override
@@ -79,14 +79,15 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             stream.doWrite(r, Files.newOutputStream(file));
         } catch (IOException e) {
-            throw new StorageException("Error insert." + e.getMessage(), null);
+            throw new StorageException("Error insert." + e.getMessage(), null, e);
         }
     }
+
     private Stream<Path> getFilesList() {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Error directory" + e.getMessage(), null);
+            throw new StorageException("Error directory" + e.getMessage(), null, e);
         }
     }
 }
