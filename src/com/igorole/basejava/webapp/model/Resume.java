@@ -73,7 +73,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) &&
+        return Objects.equals(uuid.trim(), resume.uuid.trim()) &&
                 Objects.equals(fullName, resume.fullName) &&
                 Objects.equals(contacts, resume.contacts) &&
                 Objects.equals(sections, resume.sections);
