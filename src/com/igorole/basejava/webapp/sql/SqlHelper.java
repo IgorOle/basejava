@@ -19,16 +19,10 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             return (T) executor.exec(ps);
         } catch (SQLException e) {
-            switch (e.getSQLState()) {
-                case "23505":
+            if (e.getSQLState() == "23505") {
                     throw new ExistStorageException(e.getMessage());
-
             }
-//            System.out.println("" + e.getErrorCode() + e.getSQLState()+ "/ " + e.getMessage());
-
-//            throw new NotExistStorageException(e.getMessage());
             throw new StorageException(e);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

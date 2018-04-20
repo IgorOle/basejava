@@ -2,21 +2,19 @@ package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
-import com.igorole.basejava.webapp.sql.ConnectionFactory;
 import com.igorole.basejava.webapp.sql.SqlHelper;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
-    public final ConnectionFactory connectionFactory;
     private SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        sqlHelper = new SqlHelper(connectionFactory);
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
@@ -72,8 +70,8 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("select uuid, full_name from resume order by uuid", ps -> {
-            ArrayList list = new ArrayList();
+        return sqlHelper.execute("select uuid, full_name from resume order by uuid", (PreparedStatement ps) -> {
+            ArrayList<Resume> list = new ArrayList();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
@@ -86,7 +84,9 @@ public class SqlStorage implements Storage {
     public int size() {
         return sqlHelper.execute("select count(*) as cnt from resume ", ps -> {
             ResultSet rs = ps.executeQuery();
-            rs.next();
+            if (!rs.next()) {
+                return 0;
+            }
             return rs.getInt("cnt");
         });
     }
