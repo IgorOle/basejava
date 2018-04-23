@@ -14,12 +14,12 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T execute(String sql, Executor executor){
+    public <T> T execute(String sql, Executor<T> executor){
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            return (T) executor.exec(ps);
+            return executor.exec(ps);
         } catch (SQLException e) {
-            if (e.getSQLState() == "23505") {
+            if (e.getSQLState().equals("23505")) {
                     throw new ExistStorageException(e.getMessage());
             }
             throw new StorageException(e);
