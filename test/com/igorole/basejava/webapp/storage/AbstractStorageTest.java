@@ -3,12 +3,10 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,8 +38,18 @@ public class    AbstractStorageTest {
         assertTrue(r1.equals(storage.get("uuid1")));
     }
 
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExist() throws Exception {
+        storage.get("dummy");
+    }
+
     @Test(expected = ExistStorageException.class)
     public void save() {
+        storage.save(r1);
+    }
+
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() throws Exception {
         storage.save(r1);
     }
 
@@ -53,11 +61,20 @@ public class    AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void delete() throws IOException {
+    public void updateNotExist() throws Exception {
+        storage.update(new Resume("dummy", "dummy name"));
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void delete() throws Exception {
         storage.delete(r1.getUuid());
-        System.out.println(storage.size());
         assertTrue(countElemets - 1 == storage.size());
-        storage.delete("uuid1");
+        storage.get("uuid1");
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void deleteNotExist() throws Exception {
+        storage.delete("dummy");
     }
 
     @Test
@@ -70,7 +87,7 @@ public class    AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> resultArr = storage.getAllSorted();
         List<Resume> expectedArr = Arrays.asList(r1, r2, r3, r4);
-        Assert.assertEquals(expectedArr, resultArr);
+        assertEquals(expectedArr, resultArr);
     }
 
     @Test
