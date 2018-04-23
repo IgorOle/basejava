@@ -19,13 +19,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public void clear() {
-        sqlHelper.execute("delete from resume", ps -> ps.execute());
+        sqlHelper.execute("delete from resume", PreparedStatement::execute);
     }
 
     @Override
     public Resume get(String uuid) {
-        Resume r = null;
-        r = sqlHelper.execute("select * from resume where uuid=?", ps -> {
+        return sqlHelper.execute("select * from resume where uuid=?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -33,19 +32,18 @@ public class SqlStorage implements Storage {
             }
             return new Resume(uuid, rs.getString("full_name"));
         });
-        return r;
     }
 
     @Override
     public void update(Resume r) {
-        int res = sqlHelper.execute("update resume set full_name=? where uuid=?", ps -> {
+        sqlHelper.execute("update resume set full_name=? where uuid=?", ps -> {
             ps.setString(1, r.getFullName());
             ps.setString(2, r.getUuid());
-            return ps.executeUpdate();
+            if(ps.executeUpdate() == 0 ) {
+                throw new NotExistStorageException(r.getUuid());
+            }
+            return null;
         });
-        if (res == 0) {
-            throw new NotExistStorageException(r.getUuid());
-        }
     }
 
     @Override
@@ -59,13 +57,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        int res = sqlHelper.execute("delete from resume where uuid = ?", ps -> {
+        sqlHelper.execute("delete from resume where uuid = ?", ps -> {
             ps.setString(1, uuid);
-            return ps.executeUpdate();
+            if(ps.executeUpdate()== 0) {
+                throw new NotExistStorageException(uuid);
+            }
+            return null;
         });
-        if (res == 0) {
-            throw new NotExistStorageException(uuid);
-        }
     }
 
     @Override
