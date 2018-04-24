@@ -2,7 +2,6 @@ package com.igorole.basejava.webapp.storage;
 
 import com.igorole.basejava.webapp.model.Resume;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
@@ -13,7 +12,7 @@ public interface Storage {
 
     void save(Resume r);
 
-    Resume get(String uuid) throws IOException;
+    Resume get(String uuid);
 
     void delete(String uuid);
 
