@@ -1,5 +1,6 @@
 package com.igorole.basejava.webapp.storage;
 
+import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
 import com.igorole.basejava.webapp.sql.SqlHelper;
@@ -39,7 +40,7 @@ public class SqlStorage implements Storage {
         sqlHelper.execute("update resume set full_name=? where uuid=?", ps -> {
             ps.setString(1, r.getFullName());
             ps.setString(2, r.getUuid());
-            if(ps.executeUpdate() == 0 ) {
+            if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(r.getUuid());
             }
             return null;
@@ -48,18 +49,28 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        sqlHelper.execute("insert into resume(uuid, full_name) values (?, ?)", ps -> {
-            ps.setString(1, r.getUuid());
-            ps.setString(2, r.getFullName());
-            return ps.execute();
-        });
+
+        Resume resume = null;
+        try {
+            resume = get(r.getUuid());
+        } catch (NotExistStorageException e) {
+        }
+        if (resume == null) {
+            sqlHelper.execute("insert into resume(uuid, full_name) values (?, ?)", ps -> {
+                ps.setString(1, r.getUuid());
+                ps.setString(2, r.getFullName());
+                return ps.execute();
+            });
+        } else {
+            throw new ExistStorageException(r.getUuid());
+        }
     }
 
     @Override
     public void delete(String uuid) {
         sqlHelper.execute("delete from resume where uuid = ?", ps -> {
             ps.setString(1, uuid);
-            if(ps.executeUpdate()== 0) {
+            if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(uuid);
             }
             return null;

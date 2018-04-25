@@ -14,16 +14,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-public class    AbstractStorageTest {
+public class AbstractStorageTest {
     protected static final File STORAGE_DIR = com.igorole.basejava.webapp.Config.get().getStorageDir();
     Storage storage;
-    Resume r1, r2, r3, r4;
+    Resume r1, r2, r3, r4, r5;
     public final int countElemets = 4;
 
     @Rule
-    public ExpectedException thrown= ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -36,6 +35,7 @@ public class    AbstractStorageTest {
         r2 = new Resume("uuid2", "FullName2");
         r3 = new Resume("uuid3", "FullName3");
         r4 = new Resume("uuid4", "FullName4");
+        r5 = new Resume("uuid5", "FullName5");
         saveStorage();
     }
 
@@ -49,9 +49,11 @@ public class    AbstractStorageTest {
         storage.get("dummy");
     }
 
-    @Test(expected = ExistStorageException.class)
+    @Test
     public void save() {
-        storage.save(r1);
+        storage.save(r5);
+        assertTrue(storage.size() == countElemets + 1);
+
     }
 
     @Test(expected = ExistStorageException.class)
@@ -71,12 +73,12 @@ public class    AbstractStorageTest {
         storage.update(new Resume("dummy", "dummy name"));
     }
 
-    @Test (expected = NotExistStorageException.class)
+    @Test(expected = NotExistStorageException.class)
     public void delete() throws Exception {
         storage.delete(r1.getUuid());
         assertTrue(countElemets - 1 == storage.size());
 //        try {
-            storage.get(r1.getUuid());
+        storage.get(r1.getUuid());
 //        }
 //        catch (NotExistStorageException  e) {
 //            System.out.println("aaaaaaaaaaaaaaaaa");
