@@ -1,26 +1,64 @@
 package com.igorole.basejava.webapp;
 
 
-import com.igorole.basejava.webapp.model.Resume;
-import com.igorole.basejava.webapp.storage.SqlStorage;
-import org.postgresql.util.ReaderInputStream;
+import javafx.collections.ArrayChangeListener;
+import org.omg.CORBA.Current;
+
+import java.util.ArrayList;
+import java.util.concurrent.*;
+
+class ThreadMy implements Callable {
+    String name;
+    CountDownLatch cd;
+    public ThreadMy(CountDownLatch cd, String name) {
+        this.name = name;
+        this.cd = cd;
+    }
+
+    @Override
+    public Object call() throws Exception {
+        System.out.println("-");
+        cd.countDown();
+        cd.await();
+//        Thread.sleep(1000);
+        System.out.println(System.currentTimeMillis());
+        return name;
+    }
+}
 
 public class Test1 {
 
     public static void main(String[] args) {
-//        SqlHelper sqlHelper = new SqlHelper(() -> DriverManager.getConnection("jdbc:postgresql://localhost:5432/resumes", "postgres", "111"));
-//        sqlHelper.execute("delete from resume where uuid=?", (PreparedStatement ps) -> {
-//            ps.setString(1, "1");
-//            ps.execute();
-//        } );
-        Resume r = new Resume("1", "full name11");
-        Resume r1;
+        ExecutorService service = Executors.newFixedThreadPool(2);
 
-        SqlStorage sqlStorage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "111");
-        sqlStorage.clear();
-        sqlStorage.save(r);
-        //sqlStorage.delete("1");
-        r1 = sqlStorage.get("1");
-        System.out.println(r1.getFullName());
+        CountDownLatch cd = new CountDownLatch(2);
+        ArrayList<Future> arr = new ArrayList<>();
+        for(int i = 0; i< 30; i++) {
+            arr.add(service.submit( new ThreadMy(cd, "t"+i)));
+        }
+        try {
+            for (Future f : arr ) {
+                System.out.println(f.get());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("end");
+        service.shutdown();
+//
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        service.submit(new ThreadMy(cd, "t2"));
+
+
+
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.igorole.basejava.webapp.storage;
 
+import com.igorole.basejava.webapp.GenerateResume;
 import com.igorole.basejava.webapp.exception.ExistStorageException;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.Resume;
@@ -31,11 +32,12 @@ public class AbstractStorageTest {
     @Before
     public void init() {
         storage.clear();
-        r1 = new Resume("uuid1", "FullName1");
-        r2 = new Resume("uuid2", "FullName2");
-        r3 = new Resume("uuid3", "FullName3");
-        r4 = new Resume("uuid4", "FullName4");
-        r5 = new Resume("uuid5", "FullName5");
+        //r1 = new Resume("uuid1", "FullName1");
+        r1 = GenerateResume.genResume("uuid1", "Ivanov ivan");
+        r2 = GenerateResume.genResume("uuid2", "FullName2");
+        r3 = GenerateResume.genResume("uuid3", "FullName3");
+        r4 = GenerateResume.genResume("uuid4", "FullName4");
+        r5 = GenerateResume.genResume("uuid5", "FullName5");
         saveStorage();
     }
 

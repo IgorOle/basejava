@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GenerateResume {
 
-    public static Resume genResume(String postfix) {
+    public static Resume genResume(String postfix, String s) {
         String fullName = "Иванов" + postfix + " Иван Иванович";
         OrganizationSection organizationEducationSection;
         OrganizationSection organizationJobSection;
