@@ -1,64 +1,67 @@
-package com.igorole.basejava.webapp;
-
-
-import javafx.collections.ArrayChangeListener;
-import org.omg.CORBA.Current;
-
-import java.util.ArrayList;
-import java.util.concurrent.*;
-
-class ThreadMy implements Callable {
-    String name;
-    CountDownLatch cd;
-    public ThreadMy(CountDownLatch cd, String name) {
-        this.name = name;
-        this.cd = cd;
-    }
-
-    @Override
-    public Object call() throws Exception {
-        System.out.println("-");
-        cd.countDown();
-        cd.await();
-//        Thread.sleep(1000);
-        System.out.println(System.currentTimeMillis());
-        return name;
-    }
-}
-
-public class Test1 {
-
-    public static void main(String[] args) {
-        ExecutorService service = Executors.newFixedThreadPool(2);
-
-        CountDownLatch cd = new CountDownLatch(2);
-        ArrayList<Future> arr = new ArrayList<>();
-        for(int i = 0; i< 30; i++) {
-            arr.add(service.submit( new ThreadMy(cd, "t"+i)));
-        }
-        try {
-            for (Future f : arr ) {
-                System.out.println(f.get());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        System.out.println("end");
-        service.shutdown();
+//package com.igorole.basejava.webapp;
 //
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
+//
+//import com.igorole.basejava.webapp.sql.SqlHelper;
+//
+//import java.sql.DriverManager;
+//import java.sql.PreparedStatement;
+//import java.util.concurrent.Callable;
+//import java.util.concurrent.CountDownLatch;
+//
+//class ThreadMy implements Callable {
+//    String name;
+//    CountDownLatch cd;
+//
+//    public ThreadMy(CountDownLatch cd, String name) {
+//        this.name = name;
+//        this.cd = cd;
+//    }
+//
+//    @Override
+//    public Object call() throws Exception {
+//        System.out.println("-");
+//        cd.countDown();
+//        cd.await();
+////        Thread.sleep(1000);
+//        System.out.println(System.currentTimeMillis());
+//        return name;
+//    }
+//}
+//
+//public class Test1 {
+//    static int inc = 0;
+//
+//    public static void main(String[] args) {
+//        SqlHelper sqlHelper = new SqlHelper(() -> DriverManager.getConnection(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword()));
+//        for (int i = 0; i < 10000; i++) {
+//
+//            sqlHelper.transactionalExecute(conn -> {
+//                try (PreparedStatement ps = conn.prepareStatement("insert into t1(id, dat) values(?,?)")) {
+//                    inc++;
+//                    ps.setInt(1, inc);
+//                    ps.setString(2, "t1_" + inc);
+//                    ps.execute();
+//
+//                }
+////                return null;
+////
+////                try (PreparedStatement ps = addContacts(conn, r)) {
+////                    ps.executeBatch();
+////                }
+////                return null;
+////            });
+//
+//            inc = 0;
+//            for (int i = 0; i < 1000; i++) {
+//                sqlHelper.execute("insert into t2(id, dat) values(?,?)", ps -> {
+//                    inc++;
+//                    ps.setInt(1, inc);
+//                    ps.setString(2, "t2_" + inc);
+//                    ps.execute();
+//                    return null;
+//                });
+//            }
+//
+//
 //        }
-//        service.submit(new ThreadMy(cd, "t2"));
-
-
-
-
-
-
-    }
-}
+//    }
