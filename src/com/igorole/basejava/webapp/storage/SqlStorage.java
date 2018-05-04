@@ -73,7 +73,7 @@ public class SqlStorage implements Storage {
                     try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
                         ps.setString(1, r.getUuid());
                         ps.setString(2, r.getFullName());
-                        ps.execute();
+                        ps.addBatch();
                     }
                     try (PreparedStatement ps = addContacts(conn, r)) {
                         ps.executeBatch();
