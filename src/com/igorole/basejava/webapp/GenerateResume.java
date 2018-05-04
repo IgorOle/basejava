@@ -34,7 +34,7 @@ public class GenerateResume {
         organizationsEducation.add(educationOrg1);
         organizationsEducation.add(educationOrg2);
         organizationEducationSection = new OrganizationSection(organizationsEducation);
-        resume.addSections(SectionType.EDUCATION, organizationEducationSection);
+        ///////resume.addSections(SectionType.EDUCATION, organizationEducationSection);
         //EXPERIENCE
         jobOrg1 = new Organization("ООО Ростсельмаш", null);
         jobOrg1.addActivity(LocalDate.of(2001, 01, 01), LocalDate.of(2002, 01, 01), "Новечек", "Работаем и учимся работать11111");
@@ -44,23 +44,23 @@ public class GenerateResume {
         jobOrg1.addActivity(LocalDate.of(2003, 01, 01), LocalDate.of(2008, 01, 01), "Научный сотрудник", "Продолжаем учиться и работать3333");
         organizationsJobEducation.add(jobOrg2);
         organizationJobSection = new OrganizationSection(organizationsJobEducation);
-        resume.addSections(SectionType.EXPERIENCE, organizationJobSection);
+        ////resume.addSections(SectionType.EXPERIENCE, organizationJobSection);
         //ACHIEVEMENT          SectionType.ACHIEVEMENT
         achievement.add("Достижения 1111 1 11 1 1 ");
         achievement.add("Достижения 222222222222222 23 32322");
         listAchiSection = new ListSection(achievement);
-        resume.addSections(SectionType.ACHIEVEMENT, listAchiSection);
+        ////resume.addSections(SectionType.ACHIEVEMENT, listAchiSection);
         //QUALIFICATIONS
         qualification.add("язык программирования 1");
         qualification.add("язык программирования 2");
         listQualificationSection = new ListSection(qualification);
-        resume.addSections(SectionType.QUALIFICATIONS, listQualificationSection);
+        /////resume.addSections(SectionType.QUALIFICATIONS, listQualificationSection);
         //OBJECTIVE
         textObjectiveSection = new TextSection("Описание позиция");
-        resume.addSections(SectionType.OBJECTIVE, textObjectiveSection);
+        ////resume.addSections(SectionType.OBJECTIVE, textObjectiveSection);
         //PERSONAL
         textPersonalSection = new TextSection("Описание личные качества");
-        resume.addSections(SectionType.PERSONAL, textPersonalSection);
+        ////resume.addSections(SectionType.PERSONAL, textPersonalSection);
         //Contacts data
         resume.addContact(ContactType.PHONE, "+79888887946");
         resume.addContact(ContactType.MAIL, "email@ya.ru");

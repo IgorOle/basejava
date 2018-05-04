@@ -79,17 +79,7 @@ public class AbstractStorageTest {
     public void delete() throws Exception {
         storage.delete(r1.getUuid());
         assertTrue(countElemets - 1 == storage.size());
-//        try {
         storage.get(r1.getUuid());
-//        }
-//        catch (NotExistStorageException  e) {
-//            System.out.println("aaaaaaaaaaaaaaaaa");
-//            assertTrue(true);
-//        }
-//        catch (Exception ee) {
-//            System.out.println("111111111 " + ee.getClass().getName());
-//        }
-
     }
 
     @Test(expected = NotExistStorageException.class)
