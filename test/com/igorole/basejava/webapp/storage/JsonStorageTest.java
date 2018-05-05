@@ -23,6 +23,4 @@ public class JsonStorageTest extends AbstractStorageTest {
         storage.update(r1);
         assertTrue(storage.get("uuid1").equals(resumeBefore));
     }
-
-
 }

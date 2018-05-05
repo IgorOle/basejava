@@ -43,7 +43,8 @@ public class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        assertTrue(r1.equals(storage.get("uuid1")));
+        Resume rS = storage.get("uuid1");
+        assertTrue(r1.equals(rS));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -95,8 +96,8 @@ public class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> resultArr = storage.getAllSorted();
         List<Resume> expectedArr = Arrays.asList(r1, r2, r3, r4);
+        List<Resume> resultArr = storage.getAllSorted();
         assertEquals(expectedArr, resultArr);
     }
 

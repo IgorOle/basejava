@@ -29,11 +29,9 @@ class ThreadMy implements Callable {
 }
 
 public class Test1 {
-    static int inc = 0;
 
     public static void main(String[] args) {
         SqlHelper sqlHelper = new SqlHelper(() -> DriverManager.getConnection(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword()));
-
 
         sqlHelper.transactionalExecute(conn -> {
 
@@ -46,7 +44,7 @@ public class Test1 {
             }
 
             try (PreparedStatement ps = conn.prepareStatement("insert into t2(id, dat222) values(?,?)")) {
-                for (int i = 0; i < 10_000; i++) {
+                for (int i = 0; i < 1000_000; i++) {
                     ps.setInt(1, i);
                     ps.setString(2, "t2_" + i);
                     ps.execute();
