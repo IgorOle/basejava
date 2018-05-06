@@ -24,9 +24,23 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        if (getResumes(uuid).size() == 0)
-            throw new NotExistStorageException(uuid);
-        return getResumes(uuid).get(0);
+        return sqlHelper.execute("" +
+                        " SELECT * FROM resume r " +
+                        "    LEFT JOIN contact c " +
+                        "        ON r.uuid = c.resume_uuid " +
+                        "    WHERE r.uuid = ? ",
+                ps -> {
+                    ps.setString(1, uuid);
+                    ResultSet rs = ps.executeQuery();
+                    if (!rs.next()) {
+                        throw new NotExistStorageException(uuid);
+                    }
+                    Resume r = new Resume(uuid, rs.getString("full_name"));
+                    do {
+                        addContacts(r, rs);
+                    } while (rs.next());
+                    return r;
+                });
     }
 
     @Override
@@ -43,7 +57,7 @@ public class SqlStorage implements Storage {
                 ps.setString(1, r.getUuid());
                 ps.execute();
             }
-            addContacts(conn, r);
+            saveContacts(conn, r);
             return null;
         });
     }
@@ -57,7 +71,7 @@ public class SqlStorage implements Storage {
                     ps.setString(2, r.getFullName());
                     ps.execute();
             }
-            addContacts(conn, r);
+            saveContacts(conn, r);
             return null;
         });
     }
@@ -75,7 +89,25 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return getResumes(null);
+        String sql = "" +
+                " SELECT * FROM resume r " +
+                "    LEFT JOIN contact c " +
+                "        ON r.uuid = c.resume_uuid ";
+
+        return sqlHelper.execute(sql,
+                ps -> {
+                    ArrayList<Resume> list = new ArrayList<>();
+                    ResultSet rs = ps.executeQuery();
+                    String prevUUID = "";
+                    while (rs.next()) {
+                        if (!prevUUID.equals(rs.getString("uuid").trim())) {
+                            prevUUID = rs.getString("uuid").trim();
+                            list.add(new Resume(prevUUID, rs.getString("full_name")));
+                        }
+                        addContacts(list.get(list.size() - 1), rs);
+                    }
+                    return list;
+                });
     }
 
     @Override
@@ -89,34 +121,16 @@ public class SqlStorage implements Storage {
         });
     }
 
-    private List<Resume> getResumes(final String uuid) {
-        String sql = "" +
-                " SELECT * FROM resume r " +
-                "    LEFT JOIN contact c " +
-                "        ON r.uuid = c.resume_uuid " +
-                ((uuid == null) ? "" : "    WHERE r.uuid = ? ") +
-                " ORDER BY r.uuid";
+    //add contact to resume FROM DB
+    private void addContacts(Resume r, ResultSet rs) throws SQLException {
+        String value = rs.getString("value");
+        if(value != null)
+            r.addContact(ContactType.valueOf(rs.getString("type")), value);
 
-        return sqlHelper.execute(sql,
-                ps -> {
-                    ArrayList<Resume> list = new ArrayList<>();
-                    if (uuid != null)
-                        ps.setString(1, uuid);
-                    ResultSet rs = ps.executeQuery();
-                    String prevUUID = "";
-                    while (rs.next()) {
-                        if (!prevUUID.equals(rs.getString("uuid").trim())) {
-                            prevUUID = rs.getString("uuid").trim();
-                            list.add(new Resume(prevUUID, rs.getString("full_name")));
-                        }
-                        list.get(list.size() - 1).addContact(ContactType.valueOf(rs.getString("type"))
-                                , rs.getString("value"));
-                    }
-                    return list;
-                });
     }
 
-    private void addContacts(Connection conn, Resume r) throws SQLException {
+    //save contacts INTO DB
+    private void saveContacts(Connection conn, Resume r) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
                 ps.setString(1, r.getUuid());
