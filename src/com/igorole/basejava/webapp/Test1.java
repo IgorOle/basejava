@@ -36,7 +36,7 @@ public class Test1 {
         sqlHelper.transactionalExecute(conn -> {
 
             try (PreparedStatement ps = conn.prepareStatement("insert into t1(id, dat) values(?,?)")) {
-                for (int i = 0; i < 1000_000; i++) {
+                for (int i = 0; i < 10; i++) {
                     ps.setInt(1, i);
                     ps.setString(2, "t1_" + i);
                     ps.execute();
@@ -44,7 +44,7 @@ public class Test1 {
             }
 
             try (PreparedStatement ps = conn.prepareStatement("insert into t2(id, dat222) values(?,?)")) {
-                for (int i = 0; i < 1000_000; i++) {
+                for (int i = 0; i < 5; i++) {
                     ps.setInt(1, i);
                     ps.setString(2, "t2_" + i);
                     ps.execute();
