@@ -2,6 +2,7 @@ package com.igorole.basejava.webapp.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ListSection extends Section {
     private static final long serialVersionUID = 1L;
@@ -21,7 +22,9 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        return items.toString();
+        return items.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
     }
 
     @Override
