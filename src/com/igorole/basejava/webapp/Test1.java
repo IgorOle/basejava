@@ -1,10 +1,15 @@
 package com.igorole.basejava.webapp;
 
 
+import com.igorole.basejava.webapp.model.ListSection;
+import com.igorole.basejava.webapp.model.Resume;
 import com.igorole.basejava.webapp.sql.SqlHelper;
+import com.igorole.basejava.webapp.storage.SqlStorage;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
@@ -31,28 +36,32 @@ class ThreadMy implements Callable {
 public class Test1 {
 
     public static void main(String[] args) {
-        SqlHelper sqlHelper = new SqlHelper(() -> DriverManager.getConnection(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword()));
+        Resume r = GenerateResume.genResume("uuid1111", "a1");
+        SqlStorage sqlStorage = new SqlStorage(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword());
+        sqlStorage.save(r);
 
-        sqlHelper.transactionalExecute(conn -> {
-
-            try (PreparedStatement ps = conn.prepareStatement("insert into t1(id, dat) values(?,?)")) {
-                for (int i = 0; i < 10; i++) {
-                    ps.setInt(1, i);
-                    ps.setString(2, "t1_" + i);
-                    ps.execute();
-                }
-            }
-
-            try (PreparedStatement ps = conn.prepareStatement("insert into t2(id, dat222) values(?,?)")) {
-                for (int i = 0; i < 5; i++) {
-                    ps.setInt(1, i);
-                    ps.setString(2, "t2_" + i);
-                    ps.execute();
-                }
-            }
-            return null;
-
-        });
+        //        SqlHelper sqlHelper = new SqlHelper(() -> DriverManager.getConnection(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword()));
+//
+//        sqlHelper.transactionalExecute(conn -> {
+//
+//            try (PreparedStatement ps = conn.prepareStatement("insert into t1(id, dat) values(?,?)")) {
+//                for (int i = 0; i < 10; i++) {
+//                    ps.setInt(1, i);
+//                    ps.setString(2, "t1_" + i);
+//                    ps.execute();
+//                }
+//            }
+//
+//            try (PreparedStatement ps = conn.prepareStatement("insert into t2(id, dat222) values(?,?)")) {
+//                for (int i = 0; i < 5; i++) {
+//                    ps.setInt(1, i);
+//                    ps.setString(2, "t2_" + i);
+//                    ps.execute();
+//                }
+//            }
+//            return null;
+//
+//        });
 
 //            inc = 0;
 //            for (int i = 0; i < 1000; i++) {
