@@ -5,6 +5,7 @@ import com.igorole.basejava.webapp.model.ListSection;
 import com.igorole.basejava.webapp.model.Resume;
 import com.igorole.basejava.webapp.sql.SqlHelper;
 import com.igorole.basejava.webapp.storage.SqlStorage;
+import com.igorole.basejava.webapp.web.ToHTML;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,8 +38,9 @@ public class Test1 {
 
     public static void main(String[] args) {
         Resume r = GenerateResume.genResume("uuid1111", "a1");
-        SqlStorage sqlStorage = new SqlStorage(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword());
-        sqlStorage.save(r);
+//        SqlStorage sqlStorage = new SqlStorage(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword());
+//        sqlStorage.save(r);
+        System.out.println(ToHTML.getResumeHTML(r));
 
         //        SqlHelper sqlHelper = new SqlHelper(() -> DriverManager.getConnection(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword()));
 //
