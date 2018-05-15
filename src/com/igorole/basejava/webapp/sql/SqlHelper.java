@@ -3,6 +3,7 @@ package com.igorole.basejava.webapp.sql;
 import com.igorole.basejava.webapp.exception.StorageException;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -10,6 +11,11 @@ public class SqlHelper {
     public final ConnectionFactory connectionFactory;
 
     public SqlHelper(ConnectionFactory connectionFactory) {
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         this.connectionFactory = connectionFactory;
     }
 
@@ -21,7 +27,6 @@ public class SqlHelper {
             throw ExceptionUtil.convertException(e);
         }
     }
-
 
     public <T> T transactionalExecute(SqlTransaction<T> executor) {
         try (Connection conn = connectionFactory.getConnection()) {
@@ -38,6 +43,4 @@ public class SqlHelper {
             throw new StorageException(e);
         }
     }
-
-
 }

@@ -6,6 +6,7 @@ import com.igorole.basejava.webapp.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -23,24 +24,22 @@ public class SqlStorage implements Storage {
     public Resume get(String uuid) {
         return sqlHelper.transactionalExecute(conn -> {
             Resume r = null;
-            String sql = " SELECT * FROM resume r " +
+            try (PreparedStatement ps = conn.prepareStatement(" SELECT * FROM resume r " +
                     "    LEFT JOIN contact c " +
                     "        ON r.uuid = c.resume_uuid " +
-                    "    WHERE r.uuid = ? ";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    "    WHERE r.uuid = ? ")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
                 if (!rs.next()) {
                     throw new NotExistStorageException(uuid);
                 }
                 do {
-                    if(r == null)
+                    if (r == null)
                         r = new Resume(uuid, rs.getString("full_name"));
                     addContacts(r, rs);
                 } while (rs.next());
             }
-            sql = "select * from section where resume_uuid=?";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (PreparedStatement ps = conn.prepareStatement("select * from section where resume_uuid=?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -173,7 +172,10 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, e.getValue().toString());
+                if(e.getValue() instanceof ListSection)
+                    ps.setString(3, ((ListSection)e.getValue()).getItems().stream().map(Object::toString).collect(Collectors.joining("\n")));
+                else
+                    ps.setString(3, e.getValue().toString());
                 ps.addBatch();
             }
             ps.executeBatch();
