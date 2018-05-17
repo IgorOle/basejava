@@ -5,7 +5,7 @@
 -- Dumped from database version 10.3
 -- Dumped by pg_dump version 10.3
 
--- Started on 2018-05-15 11:59:37
+-- Started on 2018-05-16 12:27:20
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -59,7 +59,6 @@ ALTER TABLE public.contact OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.contact_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -122,7 +121,7 @@ CREATE TABLE public.section (
 ALTER TABLE public.section OWNER TO postgres;
 
 --
--- TOC entry 2683 (class 2604 OID 16407)
+-- TOC entry 2683 (class 2604 OID 16570)
 -- Name: contact id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -135,16 +134,14 @@ ALTER TABLE ONLY public.contact ALTER COLUMN id SET DEFAULT nextval('public.cont
 -- Data for Name: contact; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.contact (id, resume_uuid, type, value) FROM stdin;
-1315	uuid1                               	PHONE	+79888887946
-1316	uuid1                               	MAIL	email@ya.ru
-1317	uuid2                               	PHONE	+79888887946
-1318	uuid2                               	MAIL	email@ya.ru
-1319	uuid3                               	PHONE	+79888887946
-1320	uuid3                               	MAIL	email@ya.ru
-1321	uuid4                               	PHONE	+79888887946
-1322	uuid4                               	MAIL	email@ya.ru
-\.
+INSERT INTO public.contact VALUES (2073, 'uuid1                               ', 'PHONE', '+79888887946');
+INSERT INTO public.contact VALUES (2074, 'uuid1                               ', 'MAIL', 'email@ya.ru');
+INSERT INTO public.contact VALUES (2075, 'uuid2                               ', 'PHONE', '+79888887946');
+INSERT INTO public.contact VALUES (2076, 'uuid2                               ', 'MAIL', 'email@ya.ru');
+INSERT INTO public.contact VALUES (2077, 'uuid3                               ', 'PHONE', '+79888887946');
+INSERT INTO public.contact VALUES (2078, 'uuid3                               ', 'MAIL', 'email@ya.ru');
+INSERT INTO public.contact VALUES (2079, 'uuid4                               ', 'PHONE', '+79888887946');
+INSERT INTO public.contact VALUES (2080, 'uuid4                               ', 'MAIL', 'email@ya.ru');
 
 
 --
@@ -153,12 +150,10 @@ COPY public.contact (id, resume_uuid, type, value) FROM stdin;
 -- Data for Name: resume; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.resume (uuid, full_name) FROM stdin;
-uuid1                               	Ивановuuid1 Иван Иванович
-uuid2                               	Ивановuuid2 Иван Иванович
-uuid3                               	Ивановuuid3 Иван Иванович
-uuid4                               	Ивановuuid4 Иван Иванович
-\.
+INSERT INTO public.resume VALUES ('uuid1                               ', 'Ивановuuid1 Иван Иванович');
+INSERT INTO public.resume VALUES ('uuid2                               ', 'Ивановuuid2 Иван Иванович');
+INSERT INTO public.resume VALUES ('uuid3                               ', 'Ивановuuid3 Иван Иванович');
+INSERT INTO public.resume VALUES ('uuid4                               ', 'Ивановuuid4 Иван Иванович');
 
 
 --
@@ -167,20 +162,22 @@ uuid4                               	Ивановuuid4 Иван Иванович
 -- Data for Name: section; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.section (id, resume_uuid, type, value) FROM stdin;
-872	uuid2                               	PERSONAL	Описание личные качества
-873	uuid2                               	OBJECTIVE	Описание позиция
-874	uuid2                               	QUALIFICATIONS	язык программирования 1\nязык программирования 2
-875	uuid3                               	PERSONAL	Описание личные качества
-876	uuid3                               	OBJECTIVE	Описание позиция
-877	uuid3                               	QUALIFICATIONS	язык программирования 1\nязык программирования 2
-869	uuid1                               	PERSONAL	Описание личные качества
-870	uuid1                               	OBJECTIVE	Описание позиция
-871	uuid1                               	QUALIFICATIONS	язык программирования 1\nязык программирования 2
-878	uuid4                               	PERSONAL	Описание личные качества
-879	uuid4                               	OBJECTIVE	Описание позиция
-880	uuid4                               	QUALIFICATIONS	язык программирования 1\nязык программирования 2
-\.
+INSERT INTO public.section VALUES (1283, 'uuid1                               ', 'OBJECTIVE', 'Описание позиция');
+INSERT INTO public.section VALUES (1284, 'uuid1                               ', 'PERSONAL', 'Описание личные качества');
+INSERT INTO public.section VALUES (1285, 'uuid1                               ', 'QUALIFICATIONS', 'язык программирования 1
+язык программирования 2');
+INSERT INTO public.section VALUES (1292, 'uuid4                               ', 'OBJECTIVE', 'Описание позиция');
+INSERT INTO public.section VALUES (1293, 'uuid4                               ', 'PERSONAL', 'Описание личные качества');
+INSERT INTO public.section VALUES (1294, 'uuid4                               ', 'QUALIFICATIONS', 'язык программирования 1
+язык программирования 2');
+INSERT INTO public.section VALUES (1286, 'uuid2                               ', 'OBJECTIVE', 'Описание позиция');
+INSERT INTO public.section VALUES (1287, 'uuid2                               ', 'PERSONAL', 'Описание личные качества');
+INSERT INTO public.section VALUES (1288, 'uuid2                               ', 'QUALIFICATIONS', 'язык программирования 1
+язык программирования 2');
+INSERT INTO public.section VALUES (1289, 'uuid3                               ', 'OBJECTIVE', 'Описание позиция');
+INSERT INTO public.section VALUES (1290, 'uuid3                               ', 'PERSONAL', 'Описание личные качества');
+INSERT INTO public.section VALUES (1291, 'uuid3                               ', 'QUALIFICATIONS', 'язык программирования 1
+язык программирования 2');
 
 
 --
@@ -260,7 +257,7 @@ ALTER TABLE ONLY public.section
     ADD CONSTRAINT section_resume_uuid_fkey FOREIGN KEY (resume_uuid) REFERENCES public.resume(uuid) ON DELETE CASCADE;
 
 
--- Completed on 2018-05-15 11:59:37
+-- Completed on 2018-05-16 12:27:22
 
 --
 -- PostgreSQL database dump complete
