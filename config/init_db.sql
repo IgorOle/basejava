@@ -135,13 +135,13 @@ ALTER TABLE ONLY public.contact ALTER COLUMN id SET DEFAULT nextval('public.cont
 --
 
 INSERT INTO public.contact VALUES (2073, 'uuid1                               ', 'PHONE', '+79888887946');
-INSERT INTO public.contact VALUES (2074, 'uuid1                               ', 'MAIL', 'email@ya.ru');
-INSERT INTO public.contact VALUES (2075, 'uuid2                               ', 'PHONE', '+79888887946');
-INSERT INTO public.contact VALUES (2076, 'uuid2                               ', 'MAIL', 'email@ya.ru');
-INSERT INTO public.contact VALUES (2077, 'uuid3                               ', 'PHONE', '+79888887946');
-INSERT INTO public.contact VALUES (2078, 'uuid3                               ', 'MAIL', 'email@ya.ru');
-INSERT INTO public.contact VALUES (2079, 'uuid4                               ', 'PHONE', '+79888887946');
-INSERT INTO public.contact VALUES (2080, 'uuid4                               ', 'MAIL', 'email@ya.ru');
+INSERT INTO public.contact VALUES (2074, 'uuid1                               ', 'MAIL', 'email1@ya.ru');
+INSERT INTO public.contact VALUES (2075, 'uuid2                               ', 'PHONE', '+79888887947');
+INSERT INTO public.contact VALUES (2076, 'uuid2                               ', 'MAIL', 'email2@ya.ru');
+INSERT INTO public.contact VALUES (2077, 'uuid3                               ', 'PHONE', '+79888887948');
+INSERT INTO public.contact VALUES (2078, 'uuid3                               ', 'MAIL', 'email3@ya.ru');
+INSERT INTO public.contact VALUES (2079, 'uuid4                               ', 'PHONE', '+79888887949');
+INSERT INTO public.contact VALUES (2080, 'uuid4                               ', 'MAIL', 'email4@ya.ru');
 
 
 --
@@ -162,22 +162,22 @@ INSERT INTO public.resume VALUES ('uuid4                               ', 'Ив�
 -- Data for Name: section; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.section VALUES (1283, 'uuid1                               ', 'OBJECTIVE', 'Описание позиция');
-INSERT INTO public.section VALUES (1284, 'uuid1                               ', 'PERSONAL', 'Описание личные качества');
-INSERT INTO public.section VALUES (1285, 'uuid1                               ', 'QUALIFICATIONS', 'язык программирования 1
-язык программирования 2');
-INSERT INTO public.section VALUES (1292, 'uuid4                               ', 'OBJECTIVE', 'Описание позиция');
-INSERT INTO public.section VALUES (1293, 'uuid4                               ', 'PERSONAL', 'Описание личные качества');
-INSERT INTO public.section VALUES (1294, 'uuid4                               ', 'QUALIFICATIONS', 'язык программирования 1
-язык программирования 2');
-INSERT INTO public.section VALUES (1286, 'uuid2                               ', 'OBJECTIVE', 'Описание позиция');
-INSERT INTO public.section VALUES (1287, 'uuid2                               ', 'PERSONAL', 'Описание личные качества');
-INSERT INTO public.section VALUES (1288, 'uuid2                               ', 'QUALIFICATIONS', 'язык программирования 1
-язык программирования 2');
-INSERT INTO public.section VALUES (1289, 'uuid3                               ', 'OBJECTIVE', 'Описание позиция');
-INSERT INTO public.section VALUES (1290, 'uuid3                               ', 'PERSONAL', 'Описание личные качества');
-INSERT INTO public.section VALUES (1291, 'uuid3                               ', 'QUALIFICATIONS', 'язык программирования 1
-язык программирования 2');
+INSERT INTO public.section VALUES (1283, 'uuid1                               ', 'OBJECTIVE', 'Описание позиция 1a');
+INSERT INTO public.section VALUES (1284, 'uuid1                               ', 'PERSONAL', 'Описание личные качества 1a');
+INSERT INTO public.section VALUES (1285, 'uuid1                               ', 'QUALIFICATIONS', 'язык программирования 1 1a
+язык программирования 2 1a');
+INSERT INTO public.section VALUES (1292, 'uuid4                               ', 'OBJECTIVE', 'Описание позиция 4a');
+INSERT INTO public.section VALUES (1293, 'uuid4                               ', 'PERSONAL', 'Описание личные качества 4a');
+INSERT INTO public.section VALUES (1294, 'uuid4                               ', 'QUALIFICATIONS', 'язык программирования 1 4a
+язык программирования 2 4a');
+INSERT INTO public.section VALUES (1286, 'uuid2                               ', 'OBJECTIVE', 'Описание позиция 2a');
+INSERT INTO public.section VALUES (1287, 'uuid2                               ', 'PERSONAL', 'Описание личные качества 2a');
+INSERT INTO public.section VALUES (1288, 'uuid2                               ', 'QUALIFICATIONS', 'язык программирования 1 2a
+язык программирования 2 2a');
+INSERT INTO public.section VALUES (1289, 'uuid3                               ', 'OBJECTIVE', 'Описание позиция 3a');
+INSERT INTO public.section VALUES (1290, 'uuid3                               ', 'PERSONAL', 'Описание личные качества 3a');
+INSERT INTO public.section VALUES (1291, 'uuid3                               ', 'QUALIFICATIONS', 'язык программирования 1 3a
+язык программирования 2 3a');
 
 
 --
