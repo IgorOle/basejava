@@ -1,11 +1,7 @@
-package com.igorole.basejava.webapp.web;
+package com.igorole.basejava.webapp.view;
 
 import com.igorole.basejava.webapp.model.*;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
