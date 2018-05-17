@@ -172,10 +172,16 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                if(e.getValue() instanceof ListSection)
-                    ps.setString(3, ((ListSection)e.getValue()).getItems().stream().map(Object::toString).collect(Collectors.joining("\n")));
-                else
-                    ps.setString(3, e.getValue().toString());
+                switch (e.getKey()) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        ps.setString(3, e.getValue().toString());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        ps.setString(3, ((ListSection)e.getValue()).getItems().stream().map(Object::toString).collect(Collectors.joining("\n")));
+                        break;
+                }
                 ps.addBatch();
             }
             ps.executeBatch();
