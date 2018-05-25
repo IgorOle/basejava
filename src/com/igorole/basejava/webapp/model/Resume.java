@@ -49,6 +49,14 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public String getSection(SectionType type) {
+        return sections.get(type) == null ? "" : sections.get(type).toString();
+    }
+
     public void addSections(SectionType type, Section sections) {
         this.sections.put(type, sections);
     }
@@ -82,5 +90,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(uuid, fullName, contacts, sections);
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }
