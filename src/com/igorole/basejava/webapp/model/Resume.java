@@ -53,8 +53,8 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts.get(type);
     }
 
-    public String getSection(SectionType type) {
-        return sections.get(type) == null ? "" : sections.get(type).toString();
+    public Section getSection(SectionType type) {
+        return sections.get(type);
     }
 
     public void addSections(SectionType type, Section sections) {
