@@ -1,8 +1,7 @@
 package com.igorole.basejava.webapp.web;
 
 import com.igorole.basejava.webapp.Config;
-import com.igorole.basejava.webapp.model.ContactType;
-import com.igorole.basejava.webapp.model.Resume;
+import com.igorole.basejava.webapp.model.*;
 import com.igorole.basejava.webapp.storage.SqlStorage;
 
 import javax.servlet.ServletException;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ResumeServlet extends HttpServlet {
     SqlStorage storage;
@@ -24,21 +24,41 @@ public class ResumeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String uuid = request.getParameter("uuid");
-        String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
-        for (ContactType type : ContactType.values()) {
-            String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
-                r.addContact(type, value);
-            } else {
-                r.getContacts().remove(type);
+        if (request.getParameter("save") != null) {
+            String uuid = request.getParameter("uuid");
+            String fullName = request.getParameter("fullName");
+            Resume r = storage.get(uuid);
+            r.setFullName(fullName);
+            for (ContactType type : ContactType.values()) {
+                String value = request.getParameter(type.name());
+                if (value != null && value.trim().length() != 0) {
+                    r.addContact(type, value);
+                } else {
+                    r.getContacts().remove(type);
+                }
             }
+            for (SectionType type : SectionType.values()) {
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        String var = request.getParameter(type.name());
+                        if (var != null)
+                            r.addSections(type, new TextSection(var));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        String[] vars = request.getParameterValues(type.name());
+                        if (vars != null)
+                            r.addSections(type, new ListSection(Arrays.asList(vars)));
+                        break;
+//            case EXPERIENCE:
+//            case EDUCATION:
+//                writeOrganizationSection(dos, section);
+//                break;
+                }
+            }
+            storage.update(r);
         }
-//        for()
-
-        storage.update(r);
         response.sendRedirect("resume");
     }
 
