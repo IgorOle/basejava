@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ToHTML {
+
     static public String getResumeHTML(Resume resume) {
         return "<table>"
                 + getFullName(resume)
@@ -54,6 +55,10 @@ public class ToHTML {
             case QUALIFICATIONS:
                 res = getListSectionEdit(type, section);
                 break;
+            case EDUCATION:
+            case EXPERIENCE:
+                res = getOrganizationSectionEdit(type, section);
+                break;
         }
         return res;
     }
@@ -94,6 +99,28 @@ public class ToHTML {
         if (value != "")
             value = "' value='" + value;
         return "<input type='text' name='" + type.name() + value + "' class='form-control' placeholder='" + type.getTitle() + "'><br>";
+    }
+
+    private static String getOrganizationSectionEdit(SectionType type, Section section) {
+        String res = "";
+        res = "<div class='form-inline'>" +
+                "   <div class='form-group'>" +
+                "       <label for='name' class='control-label col-sm-3'>С</label>" +
+                "       <input type='date' name='dateStart[0]' class='form-control'>" +
+                "       <label class='control-label col-sm-3'>По</label>" +
+                "       <input type='date' class='form-control'>" +
+                "   </div>" +
+                "   <div class='form-group'>" +
+                "       <label class='control-label col-xs-2'>Организация</label>" +
+                "       <input type='text' class='form-control'>" +
+                "   </div>" +
+                "   <div class='form-group'>" +
+                "       <label class='control-label col-xs-2'>Описание</label>" +
+                "       <textarea  class='form-control'></textarea>" +
+                "   </div>" +
+                "</div>";
+
+        return res;
     }
 
 }

@@ -10,11 +10,15 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript">
+        function a(){
+            alert("ssss");
+        }
         $(document).ready(function () {
             <c:forEach var="type1" items="<%=SectionType.values()%>">
                 <jsp:useBean id="type1" type="com.igorole.basejava.webapp.model.SectionType"/>
                 $('#add${type1.name()}').on('click', function () {
                     $('#${type1.name()}').append("<%=ToHTML.getSectionInputTag(type1, null)%>");
+                    $('#${type1.name()}').append("ssss");
                 });
             </c:forEach>
         });
@@ -48,18 +52,18 @@
                 <c:forEach var="type" items="<%=SectionType.values()%>">
                     <jsp:useBean id="type" type="com.igorole.basejava.webapp.model.SectionType"/>
                     <div class="row">
-                            <div class="input-group-lg " >
-                                <label class="col-xs-2 control-label">
-                                    ${type.title}
-                                    <c:if test="${type==SectionType.ACHIEVEMENT || type==SectionType.QUALIFICATIONS}">
-                                        <a href="" onclick="return false;" id="add${type.name()}"><i
-                                            class="glyphicon glyphicon-plus-sign"></i></a>
-                                    </c:if>
-                                </label>
-                                <div id="${type.name()}">
-                                    <%=ToHTML.getSectionInputTag(type, resume.getSection(type))%>
-                                </div>
+                        <div class="input-group-lg " >
+                            <label class="col-xs-2 control-label">
+                                ${type.title}
+                                <c:if test="${type!=SectionType.PERSONAL && type!=SectionType.OBJECTIVE}">
+                                    <a href="" onclick="return false;" id="add${type.name()}"><i
+                                        class="glyphicon glyphicon-plus-sign"></i></a>
+                                </c:if>
+                            </label>
+                            <div id="${type.name()}">
+                                <%=ToHTML.getSectionInputTag(type, resume.getSection(type))%>
                             </div>
+                        </div>
                     </div>
                 </c:forEach>
             </div>
