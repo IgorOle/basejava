@@ -3,14 +3,12 @@
 <%@ page import="com.igorole.basejava.webapp.view.ToHTML" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean id="resume" type="com.igorole.basejava.webapp.model.Resume" scope="request"/>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/jquery-3.3.1.js"></script>
-
-    <jsp:useBean id="resume" type="com.igorole.basejava.webapp.model.Resume" scope="request"/>
-
     <script type="text/javascript">
         $(document).ready(function () {
             <c:forEach var="type1" items="<%=SectionType.values()%>">
@@ -18,11 +16,9 @@
                 $('#add${type1.name()}').on('click', function () {
                     $('#${type1.name()}').append("<%=ToHTML.getSectionInputTag(type1, null)%>");
                 });
-                $('#add${type1.name()}').trigger('click');
             </c:forEach>
         });
     </script>
-
     <title>Резюме ${resume.fullName}</title>
 </head>
 <body>
@@ -52,7 +48,6 @@
                 <c:forEach var="type" items="<%=SectionType.values()%>">
                     <jsp:useBean id="type" type="com.igorole.basejava.webapp.model.SectionType"/>
                     <div class="row">
-
                             <div class="input-group-lg " >
                                 <label class="col-xs-2 control-label">
                                     ${type.title}
@@ -65,7 +60,6 @@
                                     <%=ToHTML.getSectionInputTag(type, resume.getSection(type))%>
                                 </div>
                             </div>
-
                     </div>
                 </c:forEach>
             </div>
@@ -75,7 +69,6 @@
         <button onclick="window.history.back()" class="btn">Отменить</button>
     </form>
 </div>
-
 
 <jsp:include page="fragments/footer.jsp"/>
 </body>
