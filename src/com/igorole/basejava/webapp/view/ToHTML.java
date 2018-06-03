@@ -103,22 +103,23 @@ public class ToHTML {
 
     private static String getOrganizationSectionEdit(SectionType type, Section section) {
         String res = "";
-        res = "<div class='form-inline'>" +
-                "   <div class='form-group'>" +
-                "       <label for='name' class='control-label col-sm-3'>С</label>" +
-                "       <input type='date' name='dateStart[0]' class='form-control'>" +
-                "       <label class='control-label col-sm-3'>По</label>" +
-                "       <input type='date' class='form-control'>" +
+        res = "  <div class='form-inline'>" +
+                "   <div class='form-group col-xs-12'>" +
+                "       <label class='control-label col-sm-1'>С</label>" +
+                "       <input type='date' name='"+type.name()+"DateStart\"+inc('"+type.name()+"DateStartInc')+\"' class='form-control col-sm-1'>" +
+                "       <label class='control-label col-sm-1'>По</label>" +
+                "       <input type='date' name='"+type.name()+"DateEnd\"+inc('"+type.name()+"DateEndInc')+\"' class='form-control col-sm-1'>" +
                 "   </div>" +
-                "   <div class='form-group'>" +
-                "       <label class='control-label col-xs-2'>Организация</label>" +
-                "       <input type='text' class='form-control'>" +
+                "</div>" +
+                "   <div class='form-group col-xs-12'>" +
+                "       <label class='control-label col-xs-1'>Организация</label>" +
+                "       <input type='text' name='"+type.name()+"Org\"+inc('"+type.name()+"OrgInc')+\"' class='form-control col-sm-10'>" +
                 "   </div>" +
-                "   <div class='form-group'>" +
-                "       <label class='control-label col-xs-2'>Описание</label>" +
-                "       <textarea  class='form-control'></textarea>" +
+                "   <div class='form-group col-xs-12'>" +
+                "       <label class='control-label col-xs-1'>Описание</label>" +
+                "       <textarea name='"+type.name()+"Descr\"+inc('"+type.name()+"DescrInc')+\"' class='form-control col-sm-11'></textarea>" +
                 "   </div>" +
-                "</div>";
+                "";
 
         return res;
     }

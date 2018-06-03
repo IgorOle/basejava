@@ -10,15 +10,22 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript">
-        function a(){
-            alert("ssss");
+        function a1(){
+            return alert($('#inc').value());
         }
         $(document).ready(function () {
+
+            function inc(name) {
+                var obj = $('#'+name);
+                var res = obj.val();
+                obj.val(++res);
+                return res;
+            }
+
             <c:forEach var="type1" items="<%=SectionType.values()%>">
                 <jsp:useBean id="type1" type="com.igorole.basejava.webapp.model.SectionType"/>
                 $('#add${type1.name()}').on('click', function () {
                     $('#${type1.name()}').append("<%=ToHTML.getSectionInputTag(type1, null)%>");
-                    $('#${type1.name()}').append("ssss");
                 });
             </c:forEach>
         });
@@ -31,6 +38,8 @@
 <div class="container center-block">
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded" >
         <input type="hidden" name="uuid" value="${resume.uuid}">
+        <!--
+        -->
         <div class="form-group">
             <dl>
                 <h3>Имя:</h3>
@@ -51,9 +60,13 @@
             <div class="container center-block">
                 <c:forEach var="type" items="<%=SectionType.values()%>">
                     <jsp:useBean id="type" type="com.igorole.basejava.webapp.model.SectionType"/>
+                    <input type="hidden" id="${type.name()}DateStartInc" value=0>
+                    <input type="hidden" id="${type.name()}DateEndInc" value=0>
+                    <input type="hidden" id="${type.name()}OrgInc" value=0>
+                    <input type="hidden" id="${type.name()}DescrInc" value=0>
                     <div class="row">
                         <div class="input-group-lg " >
-                            <label class="col-xs-2 control-label">
+                            <label class="col-xs-12 control-label">
                                 ${type.title}
                                 <c:if test="${type!=SectionType.PERSONAL && type!=SectionType.OBJECTIVE}">
                                     <a href="" onclick="return false;" id="add${type.name()}"><i
