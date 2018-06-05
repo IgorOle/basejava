@@ -102,26 +102,67 @@ public class ToHTML {
     }
 
     private static String getOrganizationSectionEdit(SectionType type, Section section) {
-        String res = "";
-        res = "  <div class='form-inline'>" +
-                "   <div class='form-group col-xs-12'>" +
-                "       <label class='control-label col-sm-1'>С</label>" +
-                "       <input type='date' name='"+type.name()+"DateStart\"+inc('"+type.name()+"DateStartInc')+\"' class='form-control col-sm-1'>" +
-                "       <label class='control-label col-sm-1'>По</label>" +
-                "       <input type='date' name='"+type.name()+"DateEnd\"+inc('"+type.name()+"DateEndInc')+\"' class='form-control col-sm-1'>" +
-                "   </div>" +
-                "</div>" +
-                "   <div class='form-group col-xs-12'>" +
-                "       <label class='control-label col-xs-1'>Организация</label>" +
-                "       <input type='text' name='"+type.name()+"Org\"+inc('"+type.name()+"OrgInc')+\"' class='form-control col-sm-10'>" +
-                "   </div>" +
-                "   <div class='form-group col-xs-12'>" +
-                "       <label class='control-label col-xs-1'>Описание</label>" +
-                "       <textarea name='"+type.name()+"Descr\"+inc('"+type.name()+"DescrInc')+\"' class='form-control col-sm-11'></textarea>" +
-                "   </div>" +
-                "";
+        StringBuffer res = new StringBuffer();
+        if (section == null)
+            return (getOrganizationInputEdit(type, null, 0)
+                    + getActivityInputEdit(type, null, null)
+                    //+ getAccounterInputTag(type, 0)
+            );
+        int i = 0, j = 0;
 
-        return res;
+        for (Organization organization : ((OrganizationSection) section).getOrganizations()) {
+            res.append(getOrganizationInputEdit(type, organization, i++));
+            for (Organization.Activity activity : organization.getActivities()) {
+                res.append(getActivityInputEdit(type, activity, j++));
+            }
+        }
+        res.append(getAccounterInputTag(type, ((OrganizationSection) section).getOrganizations().size()));
+        return res.toString();
     }
 
+    private static String getOrganizationInputEdit(SectionType type, Organization organization, Integer num) {
+        String Name = "", URL = "";
+        if (organization != null) {
+            Name = organization.getName();
+            URL = organization.getUrl();
+        }
+        return
+                "<div class='form-group col-xs-12'>" +
+                        "       <label class='control-label col-xs-1'>Организация</label>" +
+                        "       <input type='text' " +
+                        "               name='" + type.name() + "_Org_" + ( (organization == null )?"\"+inc('" + type.name() + "', 1)+\"' ": "'" + num.toString() + "'") +
+                        "               class='form-control col-sm-10' value='" + Name + "' placeholder='" + type.getTitle() + "'>" +
+                        "   </div>" +
+                        "   <div class='form-group col-xs-12'>" +
+                        "       <label class='control-label col-xs-1'>URL</label>" +
+                        "       <input type='text' " +
+                        "               name='" + type.name() + "_URL_" + ( (organization == null )?"\"+inc('" + type.name() + "', 0)+\"' ": "'" + num.toString() + "'") +
+                        "       class='form-control col-sm-10' value='" + URL + "' placeholder='http://...'>" +
+                        "   </div>";
+    }
+
+    private static String getActivityInputEdit(SectionType type, Organization.Activity activity, Integer num) {
+        String dateStartVal, dateEndVal, descrVal;
+        dateStartVal = (activity == null) ? "" : " value='" + activity.getStartDate().toString() + "'";
+        dateEndVal = (activity == null) ? "" : " value='" + activity.getEndDate().toString() + "'";
+        descrVal = (activity == null) ? "" : " value='" + activity.getDescription() + "'";
+
+        return "<div class='form-inline'>" +
+                "   <div class='form-group col-xs-12'>" +
+                "       <label class='control-label col-sm-1'>С</label>" +
+                "       <input type='date' name='" + type.name() + "DateStart" + dateStartVal + "' class='form-control col-sm-1'>" +
+                "       <label class='control-label col-sm-1'>По</label>" +
+                "       <input type='date' name='" + type.name() + "DateEnd" + dateEndVal + "' class='form-control col-sm-1'>" +
+                "   </div>" +
+                "</div>" +
+                "<div class='form-group col-xs-12'>" +
+                "       <label class='control-label col-xs-1'>Описание</label>" +
+                "       <textarea name='" + type.name() + "Descr' class='form-control col-sm-11' placeholder='Описания' >" + descrVal + "</textarea>" +
+                "</div>" +
+                "";
+    }
+
+    private static String getAccounterInputTag(SectionType type, Integer cnt) {
+        return "<input type='hidden' name=yyy id='" + type.name() + "' value='" + cnt.toString() + "'>";
+    }
 }

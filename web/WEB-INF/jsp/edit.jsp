@@ -10,23 +10,23 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript">
-        function a1(){
-            return alert($('#inc').value());
-        }
+
         $(document).ready(function () {
 
-            function inc(name) {
-                var obj = $('#'+name);
+            function inc(name, val) {
+
+                var obj = $('#' + name);
                 var res = obj.val();
-                obj.val(++res);
+                if(val == '1')
+                    obj.val(++res);
                 return res;
             }
 
             <c:forEach var="type1" items="<%=SectionType.values()%>">
-                <jsp:useBean id="type1" type="com.igorole.basejava.webapp.model.SectionType"/>
-                $('#add${type1.name()}').on('click', function () {
-                    $('#${type1.name()}').append("<%=ToHTML.getSectionInputTag(type1, null)%>");
-                });
+            <jsp:useBean id="type1" type="com.igorole.basejava.webapp.model.SectionType"/>
+            $('#add${type1.name()}').on('click', function () {
+                $('#${type1.name()}Area').append("<%=ToHTML.getSectionInputTag(type1, null)%>");
+            });
             </c:forEach>
         });
     </script>
@@ -36,10 +36,8 @@
 <jsp:include page="fragments/header.jsp"/>
 
 <div class="container center-block">
-    <form method="post" action="resume" enctype="application/x-www-form-urlencoded" >
+    <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="uuid" value="${resume.uuid}">
-        <!--
-        -->
         <div class="form-group">
             <dl>
                 <h3>Имя:</h3>
@@ -50,7 +48,7 @@
                 <c:forEach var="type" items="<%=ContactType.values()%>">
                     <div class="row">
                         <div class="input-group">
-                            <span class="input-group-addon"  style="width: 200px">${type.title}</span>
+                            <span class="input-group-addon" style="width: 200px">${type.title}</span>
                             <input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"
                                    class="form-control" placeholder="${type.title}" aria-describedby="basic-addon1">
                         </div>
@@ -60,20 +58,21 @@
             <div class="container center-block">
                 <c:forEach var="type" items="<%=SectionType.values()%>">
                     <jsp:useBean id="type" type="com.igorole.basejava.webapp.model.SectionType"/>
-                    <input type="hidden" id="${type.name()}DateStartInc" value=0>
-                    <input type="hidden" id="${type.name()}DateEndInc" value=0>
-                    <input type="hidden" id="${type.name()}OrgInc" value=0>
-                    <input type="hidden" id="${type.name()}DescrInc" value=0>
+
                     <div class="row">
-                        <div class="input-group-lg " >
+                        <div class="input-group-lg ">
                             <label class="col-xs-12 control-label">
                                 ${type.title}
                                 <c:if test="${type!=SectionType.PERSONAL && type!=SectionType.OBJECTIVE}">
-                                    <a href="" onclick="return false;" id="add${type.name()}"><i
-                                        class="glyphicon glyphicon-plus-sign"></i></a>
+                                    <a href="" onclick="return false;" id="add${type.name()}">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                    </a>
+                                </c:if>
+                                <c:if test="${type==SectionType.EDUCATION || type==SectionType.EXPERIENCE}">
+                                        <input type='hidden' name=yyy id='${type.name()}' value="0"> <!-- counter EXPERIENCE and EDUCATION -->
                                 </c:if>
                             </label>
-                            <div id="${type.name()}">
+                            <div id="${type.name()}Area" name="xxx">
                                 <%=ToHTML.getSectionInputTag(type, resume.getSection(type))%>
                             </div>
                         </div>
