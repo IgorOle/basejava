@@ -14,20 +14,32 @@
         $(document).ready(function () {
 
             function inc(name, val) {
-
                 var obj = $('#' + name);
                 var res = obj.val();
-                if(val == '1')
+                if (val == '1')
                     obj.val(++res);
                 return res;
+            }
+
+            function x() {
+
+                $('.clsActivity').on('click', function () {
+                    var type = this.id.split('_')[1];
+                    var numElement = this.name;
+                    alert('' + type + ' ' + numElement);
+                    <%=ToHTML.getActivityInputEdit(type, null, numElement!!!!!)%>
+                    return false;
+                });
             }
 
             <c:forEach var="type1" items="<%=SectionType.values()%>">
             <jsp:useBean id="type1" type="com.igorole.basejava.webapp.model.SectionType"/>
             $('#add${type1.name()}').on('click', function () {
-                $('#${type1.name()}Area').append("<%=ToHTML.getSectionInputTag(type1, null)%>");
+                $('#${type1.name()}Area').append("<%=ToHTML.getSectionInputTag(type1, null, true)%>");
+                x();
             });
             </c:forEach>
+            x();
         });
     </script>
     <title>Резюме ${resume.fullName}</title>
@@ -47,6 +59,7 @@
             <div class="container center-block">
                 <c:forEach var="type" items="<%=ContactType.values()%>">
                     <div class="row">
+
                         <div class="input-group">
                             <span class="input-group-addon" style="width: 200px">${type.title}</span>
                             <input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"
@@ -58,22 +71,22 @@
             <div class="container center-block">
                 <c:forEach var="type" items="<%=SectionType.values()%>">
                     <jsp:useBean id="type" type="com.igorole.basejava.webapp.model.SectionType"/>
-
-                    <div class="row">
+                    <div class="row page-header">
                         <div class="input-group-lg ">
                             <label class="col-xs-12 control-label">
-                                ${type.title}
+                                    ${type.title}
                                 <c:if test="${type!=SectionType.PERSONAL && type!=SectionType.OBJECTIVE}">
                                     <a href="" onclick="return false;" id="add${type.name()}">
                                         <i class="glyphicon glyphicon-plus-sign"></i>
                                     </a>
                                 </c:if>
                                 <c:if test="${type==SectionType.EDUCATION || type==SectionType.EXPERIENCE}">
-                                        <input type='hidden' name=yyy id='${type.name()}' value="0"> <!-- counter EXPERIENCE and EDUCATION -->
+                                    <input type='hidden' id='${type.name()}' name='counter_${type.name()}'
+                                           value="0"> <!-- counter for EXPERIENCE and EDUCATION -->
                                 </c:if>
                             </label>
                             <div id="${type.name()}Area" name="xxx">
-                                <%=ToHTML.getSectionInputTag(type, resume.getSection(type))%>
+                                <%=ToHTML.getSectionInputTag(type, resume.getSection(type), false)%>
                             </div>
                         </div>
                     </div>

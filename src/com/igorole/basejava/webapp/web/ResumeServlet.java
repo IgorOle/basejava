@@ -51,10 +51,11 @@ public class ResumeServlet extends HttpServlet {
                         if (vars != null)
                             r.addSections(type, new ListSection(Arrays.asList(vars)));
                         break;
-//            case EXPERIENCE:
-//            case EDUCATION:
-//                writeOrganizationSection(dos, section);
-//                break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                    //    request.get
+
+                        break;
                 }
             }
             storage.update(r);
