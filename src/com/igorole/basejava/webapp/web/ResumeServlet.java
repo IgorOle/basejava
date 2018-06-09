@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ResumeServlet extends HttpServlet {
@@ -27,7 +28,13 @@ public class ResumeServlet extends HttpServlet {
         if (request.getParameter("save") != null) {
             String uuid = request.getParameter("uuid");
             String fullName = request.getParameter("fullName");
-            Resume r = storage.get(uuid);
+            Resume r;
+            if (uuid == null) {
+                r = new Resume(fullName);
+            } else {
+                r = storage.get(uuid);
+            }
+
             r.setFullName(fullName);
             for (ContactType type : ContactType.values()) {
                 String value = request.getParameter(type.name());
@@ -53,8 +60,17 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                    //    request.get
-
+                        int counter_TYPE = Integer.parseInt(request.getParameter("counter_" + type));
+                        counter_TYPE++;
+                        ArrayList<Organization> organizations = new ArrayList<>();
+                        for (Integer i = 0; i < counter_TYPE; i++) {
+                            String org = request.getParameter(type + "_Org_" + i);
+                            if ("".equals(org)) continue;
+                            Organization organization = new Organization(org, request.getParameter(type + "_Url_" + i));
+                            organizations.add(organization);
+                        }
+                        if (organizations.size() > 0)
+                            r.addSections(type, new OrganizationSection(organizations));
                         break;
                 }
             }

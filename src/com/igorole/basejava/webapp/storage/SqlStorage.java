@@ -3,6 +3,7 @@ package com.igorole.basejava.webapp.storage;
 import com.igorole.basejava.webapp.exception.NotExistStorageException;
 import com.igorole.basejava.webapp.model.*;
 import com.igorole.basejava.webapp.sql.SqlHelper;
+import com.igorole.basejava.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -180,6 +181,10 @@ public class SqlStorage implements Storage {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         ps.setString(3, ((ListSection)e.getValue()).getItems().stream().map(Object::toString).collect(Collectors.joining("\n")));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        ps.setString(3, JsonParser.write(e.getValue(), Section.class));
                         break;
                 }
                 ps.addBatch();

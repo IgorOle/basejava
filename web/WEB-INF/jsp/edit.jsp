@@ -27,7 +27,6 @@
                     var type = this.id.split('_')[1];
                     var numElement = this.name;
                     alert('' + type + ' ' + numElement);
-                    <%=ToHTML.getActivityInputEdit(type, null, numElement!!!!!)%>
                     return false;
                 });
             }
