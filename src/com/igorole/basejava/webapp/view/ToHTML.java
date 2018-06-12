@@ -79,10 +79,11 @@ public class ToHTML {
         StringBuffer res = new StringBuffer();
         int i = 0;
         for (Organization organization : ((OrganizationSection) section).getOrganizations()) {
-            res.append(getOrganizationInputEdit(type.name(), organization, i++, false));
+            res.append(getOrganizationInputEdit(type.name(), organization, i, false));
             for (Organization.Activity activity : organization.getActivities()) {
                 res.append(getActivityInputEdit(type.name(), activity, i));
             }
+            i++;
         }
         return begin + res.toString() + end;
     }
@@ -131,7 +132,7 @@ public class ToHTML {
         }
         return
                 "<div class='form-group col-xs-12'>" +
-                        "   <label class='control-label col-xs-1'>Организация</label>" +
+                        "   <label class='control-label col-xs-1 "+type+"'>Организация</label>" +
                         "   <input type='text' " +
                         "       name='" + type + "_Org_" + ((js) ? "\"+inc('" + type + "', 1)+\"' " : numElement.toString().trim() + "'") + //increment accounter
                         "       class='form-control col-sm-10' value='" + Name + "' placeholder='Название организации'>" +
@@ -142,10 +143,12 @@ public class ToHTML {
                         "       name='" + type + "_URL_" + ((js) ? "\"+inc('" + type + "', 0)+\"' " : numElement.toString().trim() + "'") +
                         "   class='form-control col-sm-10' value='" + URL + "' placeholder='http://...'>" +
                         "</div>" +
+                        "<div>" +
                         "<a href='' class='clsActivity' id='add_" + type + "_Activity'" + //button for add activity; name is value for elements: dateStart, dateEnd, Describe
                         "           name=" + ((js) ? "\"+inc('" + type + "', 0)+\"' " : numElement.toString().trim() + "'") + ">" +
                         "   <i class='glyphicon glyphicon-plus-sign'></i>" +
-                        "</a>"
+                        "</a>" +
+                        "</div>"
                 ;
     }
 
@@ -154,7 +157,7 @@ public class ToHTML {
         if (activity != null) {
             dateStart = " value='" + activity.getStartDate().toString() + "'";
             dateEnd = " value='" + activity.getEndDate().toString() + "'";
-            desc = " value='" + activity.getDescription() + "'";
+            desc = activity.getDescription();
         }
         return "<div class='form-inline'>" +
                 "   <div class='form-group col-xs-12'>" +

@@ -157,10 +157,10 @@ public class SqlStorage implements Storage {
             case QUALIFICATIONS:
                 section = new ListSection(Arrays.asList(values.split("\n")));
                 break;
-//            case EXPERIENCE:
-//            case EDUCATION:
-//                writeOrganizationSection(dos, section);
-//                break;
+            case EXPERIENCE:
+            case EDUCATION:
+                section =  (OrganizationSection) (JsonParser.read(values, Section.class)) ;
+                break;
         }
         if (section != null) {
             r.addSections(type, section);

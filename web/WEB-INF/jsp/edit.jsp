@@ -21,6 +21,15 @@
                 return res;
             }
 
+            function recountCounters() {
+                var arr=['EXPERIENCE', 'EDUCATION'];
+                arr.forEach(function (value) {
+                    var cnt = $('.'+value).length;
+                    $('#'+value).val(--cnt);
+                });
+
+            }
+
             function x() {
 
                 $('.clsActivity').on('click', function () {
@@ -29,6 +38,7 @@
                     alert('' + type + ' ' + numElement);
                     return false;
                 });
+                recountCounters();
             }
 
             <c:forEach var="type1" items="<%=SectionType.values()%>">

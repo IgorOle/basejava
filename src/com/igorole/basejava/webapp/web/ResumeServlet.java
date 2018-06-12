@@ -3,6 +3,7 @@ package com.igorole.basejava.webapp.web;
 import com.igorole.basejava.webapp.Config;
 import com.igorole.basejava.webapp.model.*;
 import com.igorole.basejava.webapp.storage.SqlStorage;
+import com.igorole.basejava.webapp.util.DateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,7 +67,17 @@ public class ResumeServlet extends HttpServlet {
                         for (Integer i = 0; i < counter_TYPE; i++) {
                             String org = request.getParameter(type + "_Org_" + i);
                             if ("".equals(org)) continue;
-                            Organization organization = new Organization(org, request.getParameter(type + "_Url_" + i));
+                            Organization organization = new Organization(org, request.getParameter(type + "_URL_" + i));
+                            for(int j=0; j < request.getParameterValues(type+"_DateStart_" + i).length; j++) {
+                                organization.addActivity(
+                                        DateUtil.parse(request.getParameterValues(type + "_DateStart_" + i)[j]),
+                                        DateUtil.parse(request.getParameterValues(type + "_DateEnd_" + i)[j]),
+                                    "titleeeeee",
+                                    request.getParameterValues(type + "_Descr_" + i)[j]
+                                );
+                            }
+
+
                             organizations.add(organization);
                         }
                         if (organizations.size() > 0)
