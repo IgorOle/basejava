@@ -22,12 +22,11 @@
             }
 
             function recountCounters() {
-                var arr=['EXPERIENCE', 'EDUCATION'];
+                var arr = ['EXPERIENCE', 'EDUCATION'];
                 arr.forEach(function (value) {
-                    var cnt = $('.'+value).length;
-                    $('#'+value).val(--cnt);
+                    var cnt = $('.' + value).length;
+                    $('#' + value).val(--cnt);
                 });
-
             }
 
             function x() {
@@ -68,7 +67,6 @@
             <div class="container center-block">
                 <c:forEach var="type" items="<%=ContactType.values()%>">
                     <div class="row">
-
                         <div class="input-group">
                             <span class="input-group-addon" style="width: 200px">${type.title}</span>
                             <input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"

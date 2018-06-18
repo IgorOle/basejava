@@ -1,8 +1,8 @@
 package com.igorole.basejava.webapp.model;
 
 public enum ContactType {
-    PHONE("Тел."),
-    MOBILE("Мобильный"),
+    PHONE("Телефон"),
+    MOBILE("Мобильный тел."),
     HOME_PHONE("Домашний тел."),
     SKYPE("Skype"),
     MAIL("Почта"),

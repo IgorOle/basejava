@@ -1,3 +1,5 @@
+<%@ page import="com.igorole.basejava.webapp.view.ToHTML" %>
+<%@ page import="com.igorole.basejava.webapp.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -10,14 +12,36 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></h2>
-    <p>
-        <c:forEach var="contactEntry" items="${resume.contacts}">
-            <jsp:useBean id="contactEntry"
-                         type="java.util.Map.Entry<com.igorole.basejava.webapp.model.ContactType, java.lang.String>"/>
-                <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
-        </c:forEach>
-    <p>
+    <div class="container">
+        <div class="col-lg-12">
+
+            <div class="row">
+                <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></h2>
+            </div>
+            <div class="row">
+                <c:forEach var="contactEntry" items="${resume.contacts}">
+                    <jsp:useBean id="contactEntry"
+                                 type="java.util.Map.Entry<com.igorole.basejava.webapp.model.ContactType, java.lang.String>"/>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <%=contactEntry.getKey().getTitle()%>
+                            </div>
+                            <div class="col-sm-1">
+                                <%=ToHTML.getContact(resume, contactEntry.getKey())%>
+                            </div>
+                        </div>
+                </c:forEach>
+                <hr>
+            </div>
+            <div row="row">
+                <c:forEach var="type" items="<%=SectionType.values()%>">
+                    <jsp:useBean id="type" type="com.igorole.basejava.webapp.model.SectionType"/>
+                    <%=ToHTML.getSectionView(resume, type)%>
+                </c:forEach>
+            </div>
+
+        </div>
+    </div>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

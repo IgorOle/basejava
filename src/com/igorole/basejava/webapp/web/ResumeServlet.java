@@ -30,13 +30,15 @@ public class ResumeServlet extends HttpServlet {
             String uuid = request.getParameter("uuid");
             String fullName = request.getParameter("fullName");
             Resume r;
-            if (uuid == null) {
+            boolean newResume = "-1".equals(uuid);
+            if(newResume) {
                 r = new Resume(fullName);
-            } else {
+            }
+            else {
                 r = storage.get(uuid);
+                r.setFullName(fullName);
             }
 
-            r.setFullName(fullName);
             for (ContactType type : ContactType.values()) {
                 String value = request.getParameter(type.name());
                 if (value != null && value.trim().length() != 0) {
@@ -68,16 +70,14 @@ public class ResumeServlet extends HttpServlet {
                             String org = request.getParameter(type + "_Org_" + i);
                             if ("".equals(org)) continue;
                             Organization organization = new Organization(org, request.getParameter(type + "_URL_" + i));
-                            for(int j=0; j < request.getParameterValues(type+"_DateStart_" + i).length; j++) {
+                            for (int j = 0; j < request.getParameterValues(type + "_DateStart_" + i).length; j++) {
                                 organization.addActivity(
                                         DateUtil.parse(request.getParameterValues(type + "_DateStart_" + i)[j]),
                                         DateUtil.parse(request.getParameterValues(type + "_DateEnd_" + i)[j]),
-                                    "titleeeeee",
-                                    request.getParameterValues(type + "_Descr_" + i)[j]
+                                        request.getParameterValues(type + "_Title_" + i)[j],
+                                        request.getParameterValues(type + "_Descr_" + i)[j]
                                 );
                             }
-
-
                             organizations.add(organization);
                         }
                         if (organizations.size() > 0)
@@ -85,7 +85,12 @@ public class ResumeServlet extends HttpServlet {
                         break;
                 }
             }
-            storage.update(r);
+            if(newResume) {
+                storage.save(r);
+            }
+            else {
+                storage.update(r);
+            }
         }
         response.sendRedirect("resume");
     }
@@ -94,8 +99,6 @@ public class ResumeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
-
-
         if (action == null) {
             request.setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
@@ -107,6 +110,9 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "add":
+                r = new Resume("-1","ФИО");
+                break;
             case "view":
             case "edit":
                 r = storage.get(uuid);
