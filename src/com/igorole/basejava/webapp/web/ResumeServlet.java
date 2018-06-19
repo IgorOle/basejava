@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResumeServlet extends HttpServlet {
     SqlStorage storage;
@@ -31,10 +33,9 @@ public class ResumeServlet extends HttpServlet {
             String fullName = request.getParameter("fullName");
             Resume r;
             boolean newResume = "-1".equals(uuid);
-            if(newResume) {
+            if (newResume) {
                 r = new Resume(fullName);
-            }
-            else {
+            } else {
                 r = storage.get(uuid);
                 r.setFullName(fullName);
             }
@@ -52,14 +53,17 @@ public class ResumeServlet extends HttpServlet {
                     case PERSONAL:
                     case OBJECTIVE:
                         String var = request.getParameter(type.name());
-                        if (var != null)
+                        if (var != null && var.length() > 0)
                             r.addSections(type, new TextSection(var));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         String[] vars = request.getParameterValues(type.name());
-                        if (vars != null)
-                            r.addSections(type, new ListSection(Arrays.asList(vars)));
+                        if (vars != null) {
+                            List<String> collect = (Arrays.asList(vars).stream().filter(s -> s.length() > 0)).collect(Collectors.toList());
+                            if (collect.size() > 0)
+                                r.addSections(type, new ListSection(collect));
+                        }
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -85,10 +89,9 @@ public class ResumeServlet extends HttpServlet {
                         break;
                 }
             }
-            if(newResume) {
+            if (newResume) {
                 storage.save(r);
-            }
-            else {
+            } else {
                 storage.update(r);
             }
         }
@@ -111,7 +114,7 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "add":
-                r = new Resume("-1","ФИО");
+                r = new Resume("-1", "ФИО");
                 break;
             case "view":
             case "edit":

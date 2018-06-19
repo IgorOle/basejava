@@ -16,7 +16,11 @@
         <div class="col-lg-12">
 
             <div class="row">
-                <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></h2>
+                <h2>${resume.fullName}&nbsp;
+                    <a href="resume?uuid=${resume.uuid}&action=edit">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                </h2>
             </div>
             <div class="row">
                 <c:forEach var="contactEntry" items="${resume.contacts}">

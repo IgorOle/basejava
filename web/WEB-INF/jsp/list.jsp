@@ -11,7 +11,6 @@
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-<a href="resume?action=add" name="newResume">adddd</a>
 <div class="container">
     <table border="1" cellpadding="8" cellspacing="0"  class="table table-bordered table-striped">
         <tr>

@@ -90,7 +90,7 @@ public class ToHTML {
         String value = resume.getContact(type);
         switch (type) {
             case MAIL:
-                value = "<a href=\"mailto:" + value + "\">" + value + "</a>";
+                value = (value != null) ? ("<a href=\"mailto:" + value + "\">" + value + "</a>") : "";
                 break;
             case SKYPE:
                 value = "<a href=\"skype:" + value + "\">" + value + "</a>";
@@ -161,7 +161,7 @@ public class ToHTML {
     }
 
     private static String getListSectionView(SectionType type, Section section) {
-        if (((ListSection) section).getItems().size() == 0) return "";
+        if ("".equals(section.toString())) return "";
         StringBuffer res = new StringBuffer();
         res.append("<h3>" + type.getTitle() + "</h3>");
         res.append("<ul>");
