@@ -159,7 +159,7 @@ public class SqlStorage implements Storage {
                 break;
             case EXPERIENCE:
             case EDUCATION:
-                section =  (OrganizationSection) (JsonParser.read(values, Section.class)) ;
+                section = (JsonParser.read(values, Section.class));
                 break;
         }
         if (section != null) {
@@ -180,7 +180,7 @@ public class SqlStorage implements Storage {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        ps.setString(3, ((ListSection)e.getValue()).getItems().stream().map(Object::toString).collect(Collectors.joining("\n")));
+                        ps.setString(3, ((ListSection) e.getValue()).getItems().stream().map(Object::toString).collect(Collectors.joining("\n")));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
