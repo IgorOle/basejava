@@ -1,8 +1,8 @@
 package com.igorole.basejava.webapp.view;
 
 import com.igorole.basejava.webapp.model.*;
+import com.igorole.basejava.webapp.util.DateUtil;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -173,14 +173,14 @@ public class ToHTML {
     }
 
     private static String getOrganizationSectionView(SectionType type, Section section) {
-        if (((OrganizationSection) section).getOrganizations().size() == 0) return "";
+        //if (((OrganizationSection) section).getOrganizations().size() == 0) return "";
         StringBuffer res = new StringBuffer();
         res.append("<h3>" + type.getTitle() + "</h3>");
         for (Organization organization : ((OrganizationSection) section).getOrganizations()) {
             res.append("<h4><a href='" + organization.getUrl() + "'>" + organization.getName() + "</a></h4>");
             res.append("<div class='row'>");
             for (Organization.Activity activity : organization.getActivities()) {
-                res.append("<div class='col-sm-3'>" + activity.getStartDate() + " - " + activity.getEndDate() + "</div>");
+                res.append("<div class='col-sm-3'>" + DateUtil.format(activity.getStartDate()) + " - " + DateUtil.format(activity.getEndDate()) + "</div>");
                 res.append("<div class='col-sm-9'>" + activity.getDescription() + "</div>");
             }
             res.append("</div>");
@@ -246,7 +246,7 @@ public class ToHTML {
                         "<div>" +
                         "<a href='' class='clsActivity' id='add_" + type + "_Activity'" + //button for add activity; name is value for elements: dateStart, dateEnd, Describe
                         "           name=" + ((js) ? "\"+inc('" + type + "', 0)+\"' " : numElement.toString().trim() + "'") + ">" +
-                        "   <i class='glyphicon glyphicon-plus-sign'></i>" +
+                        //"   <i class='glyphicon glyphicon-plus-sign'></i>" +
                         "</a>" +
                         "</div>"
                 ;
